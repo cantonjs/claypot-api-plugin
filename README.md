@@ -1,26 +1,14 @@
-Just a static HTTP server.
+# claypot-api-plugin
 
 **THIS LIBRARY IS UNDER DEVELOPING, PLEASE DON'T USE IT IN PRODUCTION ENV**
 
 ## Installing
 
 ```bash
-$ npm install -g claypot
+$ yarn add claypot claypot-api-plugin
 ```
 
-## Usage
-
-Start a claypot server
-
-```bash
-$ claypot
-```
-
-For more usage
-
-```bash
-$ claypot -h
-```
+**DOCUMENT IS COMING SOON**
 
 ## License
 
