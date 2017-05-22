@@ -20,7 +20,7 @@ const getBodyParserConfig = (bodyParserConfig = {}) => {
 	};
 };
 
-export default function router(routes, fullSpec, config) {
+export default function router(routes, config) {
 	const app = new Koa();
 
 	app.use(bodyParser(getBodyParserConfig(config.bodyParser)));
@@ -28,9 +28,9 @@ export default function router(routes, fullSpec, config) {
 	routes.forEach(({ path, metaData }) => {
 		const childApp = new Koa();
 		const childRouter = new Router();
-		metaData.forEach(({ method, pathname, middlewares, spec }) => {
-			const routeMiddlewares = createRouteMiddlwawres(spec, fullSpec);
-			childRouter[method](pathname, ...routeMiddlewares, ...middlewares);
+		metaData.forEach(({ method, path, middlewares, fullPath }) => {
+			const routeMiddlewares = createRouteMiddlwawres(method, path, fullPath);
+			childRouter[method](path, ...routeMiddlewares, ...middlewares);
 		});
 		childApp.use(childRouter.middleware());
 		app.use(mount(path, childApp));

@@ -8,13 +8,13 @@ import { logger } from 'claypot';
 
 const parser = new SwaggerParser();
 
-const travel = function travel(spec) {
+const setRefs = function setRefs(spec) {
 	if (Array.isArray(spec)) {
-		spec = spec.map(travel);
+		spec = spec.map(setRefs);
 	}
 	else if (isObject(spec)) {
 		spec = Object.keys(spec).reduce((obj, key) => {
-			obj[key] = travel(spec[key]);
+			obj[key] = setRefs(spec[key]);
 			return obj;
 		}, {});
 	}
@@ -38,7 +38,7 @@ export default async function getSpec(specPaths, config, claypotConfig) {
 	});
 	spec.paths = specPaths;
 	spec.securityDefinitions = getSecurities(config);
-	spec = travel(spec);
+	spec = setRefs(spec);
 
 	spec = await parser.parse(spec);
 	// const ast = await parser.dereference(spec);
