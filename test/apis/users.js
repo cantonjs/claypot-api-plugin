@@ -1,4 +1,29 @@
 
+// const { post, desc } = global;
+
+// @post('/', {
+// 	summary: 'Create a new user',
+// 	security: ['+admin'],
+// })
+// export class create {
+
+// 	@desc({
+// 		description: 'User object that needs to be added to the store',
+// 		required: true,
+// 	})
+// 	user = this.$body.user;
+
+// 	@desc({
+// 		description: 'Access token',
+// 		required: true,
+// 	})
+// 	accessToken = this.$header['X-ACCESS-TOKEN'];
+
+// 	async $apply(ctx) {
+// 		return this.user;
+// 	}
+// }
+
 export default function users(router) {
 	return router
 		.post('/', {
