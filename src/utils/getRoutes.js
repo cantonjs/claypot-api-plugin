@@ -5,18 +5,18 @@ import mapModules from './mapModules';
 import convertURL from './convertURL';
 import spec from '../spec';
 
-function RouterMeta(config, name, absolutePath) {
+function RouterMeta(config, name, path) {
 	this._config = config;
 	this._name = name;
-	this._absolutePath = absolutePath;
-	this._childRoutes = [];
+	this._absolutePath = path;
+	this.route = { path, metaData: [] };
 };
 
 httpMethodsWhiteList.forEach((method) => {
 	RouterMeta.prototype[method] = function (path, pathSpec, ...middlewares) {
 		path = ensureAbsolutePath(path);
 		const fullPath = convertURL(this._absolutePath + path);
-		this._childRoutes.push({
+		this.route.metaData.push({
 			fullPath,
 			path,
 			method,
@@ -27,16 +27,7 @@ httpMethodsWhiteList.forEach((method) => {
 	};
 });
 
-RouterMeta.prototype.__toObjects = function __toObjects() {
-	return {
-		route: {
-			path: this._absolutePath,
-			metaData: this._childRoutes,
-		},
-	};
-};
-
-export default function parse(config = {}, claypotConfig) {
+export default function getRoutes(config = {}, claypotConfig) {
 	const controllers = mapModules(config.controllersPath, claypotConfig.root);
 	const routes = [];
 	controllers
@@ -44,12 +35,8 @@ export default function parse(config = {}, claypotConfig) {
 			const absolutePath = ensureAbsolutePath(name);
 			const routerMeta = new RouterMeta(config, name, absolutePath);
 			module(routerMeta);
-			const {
-				route,
-			} = routerMeta.__toObjects();
-			routes.push(route);
+			routes.push(routerMeta.route);
 		})
 	;
-
-	return { routes };
+	return routes;
 }

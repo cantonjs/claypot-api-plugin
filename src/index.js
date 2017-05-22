@@ -3,7 +3,7 @@ import doc from './doc';
 import router from './router';
 import getConfig from './utils/getConfig';
 import spec from './spec';
-import parse from './utils/parse';
+import getRoutes from './utils/getRoutes';
 
 export default class ApiClaypotPlugin {
 	constructor(config, claypotConfig) {
@@ -14,9 +14,8 @@ export default class ApiClaypotPlugin {
 	async initAsync() {
 		const { config, claypotConfig } = this;
 		await spec.init(config, claypotConfig);
-		const { routes } = parse(config, claypotConfig);
+		this.routes = getRoutes(config, claypotConfig);
 		await spec.genDereferenceAsync();
-		this.routes = routes;
 	}
 
 	middleware(app) {
