@@ -1,5 +1,6 @@
 
 import ensureAbsolutePath from './ensureAbsolutePath';
+import ensureSecurityExplication from './ensureSecurityExplication';
 
 export default function getDefaultSpec(config, claypotConfig) {
 	const info = {
@@ -8,7 +9,7 @@ export default function getDefaultSpec(config, claypotConfig) {
 		...config.info,
 	};
 
-	return {
+	const spec = {
 		'swagger': '2.0',
 		info,
 		'basePath': ensureAbsolutePath(config.basePath),
@@ -16,22 +17,13 @@ export default function getDefaultSpec(config, claypotConfig) {
 		'produces': config.produces,
 		'schemes': ['http', claypotConfig.ssl.enable && 'https'].filter(Boolean),
 		'paths': {},
-		'securityDefinitions': {
-			'petstore_auth': {
-				'type': 'oauth2',
-				'authorizationUrl': 'http://petstore.swagger.io/oauth/dialog',
-				'flow': 'implicit',
-				'scopes': {
-					'write:pets': 'modify pets in your account',
-					'read:pets': 'read your pets'
-				}
-			},
-			'api_key': {
-				'type': 'apiKey',
-				'name': 'api_key',
-				'in': 'header'
-			}
-		},
+		'securityDefinitions': {},
 		'definitions': {},
 	};
+
+	if (config.defaultSecurity) {
+		spec.security = ensureSecurityExplication(config.defaultSecurity);
+	}
+
+	return spec;
 }

@@ -3,6 +3,7 @@ export default function users(router) {
 	return router
 		.post('/', {
 			summary: 'Create a new user',
+			security: ['defaults'],
 			parameters: [
 				{
 					in: 'body',
@@ -13,12 +14,11 @@ export default function users(router) {
 				},
 			],
 			responses: {
-				'405': {
-					description: 'Invalid input'
+				'200': {
+					schema: '$User',
 				}
 			},
 		}, async (ctx) => {
-			console.log('create user', ctx.request.body);
 			ctx.body = { message: 'create user' };
 		})
 		.get('/', {
@@ -30,26 +30,30 @@ export default function users(router) {
 					description: 'Get user by name',
 				},
 			],
-			responses: {
-				'200': {
-					description: 'Success'
-				}
-			},
 		}, async (ctx) => {
 			ctx.body = {
 				code: 200,
 				message: 'get user',
 			};
 		})
-		// .put('/', (ctx) => {
-		// 	return {
-		// 		name:
-		// 	};
-		// }, async (ctx) => {
-		// 	ctx.body = {
-		// 		code: 200,
-		// 		message: 'get user',
-		// 	};
-		// })
+		.delete('/:id', {
+			summary: 'Delete a user by id',
+			security: ['admin'],
+			parameters: [
+				{
+					name: 'id',
+					in: 'path',
+					required: true,
+				},
+				{
+					name: 'X-ACCESS-TOKEN',
+					in: 'header',
+					type: 'string',
+					required: true,
+				},
+			],
+		}, async (ctx) => {
+			ctx.body = { ok: `deleted user ${ctx.params.id}` };
+		})
 	;
 }

@@ -809,6 +809,10 @@ bytes@2.4.0, bytes@^2.3.0:
   version "2.4.0"
   resolved "http://registry.npm.taobao.org/bytes/download/bytes-2.4.0.tgz#7d97196f9d5baf7f6935e25985549edd2a6c2339"
 
+call-me-maybe@^1.0.1:
+  version "1.0.1"
+  resolved "http://registry.npm.taobao.org/call-me-maybe/download/call-me-maybe-1.0.1.tgz#26d208ea89e37b5cbde60250a15f031c16a4d66b"
+
 caller-path@^0.1.0:
   version "0.1.0"
   resolved "http://registry.npm.taobao.org/caller-path/download/caller-path-0.1.0.tgz#94085ef63581ecd3daa92444a8fe94e82577751f"
@@ -890,9 +894,9 @@ circular-json@^0.3.1:
   version "0.3.1"
   resolved "http://registry.npm.taobao.org/circular-json/download/circular-json-0.3.1.tgz#be8b36aefccde8b3ca7aa2d6afc07a37242c0d2d"
 
-claypot@^0.0.0-beta.18:
-  version "0.0.0-beta.18"
-  resolved "http://registry.npm.taobao.org/claypot/download/claypot-0.0.0-beta.18.tgz#7b736467e8956d73145c929a20e291b2ff3deb89"
+claypot@^0.0.0-beta.19:
+  version "0.0.0-beta.19"
+  resolved "http://registry.npm.taobao.org/claypot/download/claypot-0.0.0-beta.19.tgz#addafa51d1376adc9fba6ee0e88fea725635a7cf"
   dependencies:
     chalk "^1.1.3"
     find-port-sync "^1.0.0"
@@ -1002,7 +1006,7 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@^2.8.1, commander@^2.9.0:
+commander@^2.7.1, commander@^2.8.1, commander@^2.9.0:
   version "2.9.0"
   resolved "http://registry.npm.taobao.org/commander/download/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
   dependencies:
@@ -1348,6 +1352,10 @@ es6-map@^0.1.3:
     es6-set "~0.1.5"
     es6-symbol "~3.1.1"
     event-emitter "~0.3.5"
+
+es6-promise@^3.0.2:
+  version "3.3.1"
+  resolved "http://registry.npm.taobao.org/es6-promise/download/es6-promise-3.3.1.tgz#a08cdde84ccdbf34d027a1451bc91d4bcd28a613"
 
 es6-set@~0.1.5:
   version "0.1.5"
@@ -2707,7 +2715,7 @@ js-tokens@^3.0.0:
   version "3.0.1"
   resolved "http://registry.npm.taobao.org/js-tokens/download/js-tokens-3.0.1.tgz#08e9f132484a2c45a30907e9dc4d5567b7f114d7"
 
-js-yaml@^3.5.1, js-yaml@^3.7.0:
+js-yaml@^3.4.6, js-yaml@^3.5.1, js-yaml@^3.7.0:
   version "3.8.3"
   resolved "http://registry.npm.taobao.org/js-yaml/download/js-yaml-3.8.3.tgz#33a05ec481c850c8875929166fe1beb61c728766"
   dependencies:
@@ -2745,6 +2753,16 @@ jsdom@^9.11.0:
 jsesc@^1.3.0:
   version "1.3.0"
   resolved "http://registry.npm.taobao.org/jsesc/download/jsesc-1.3.0.tgz#46c3fec8c1892b12b0833db9bc7622176dbab34b"
+
+json-schema-ref-parser@^1.4.1:
+  version "1.4.1"
+  resolved "http://registry.npm.taobao.org/json-schema-ref-parser/download/json-schema-ref-parser-1.4.1.tgz#c0c2e438bf0796723b02451bae8bc7dd0b37fed0"
+  dependencies:
+    call-me-maybe "^1.0.1"
+    debug "^2.2.0"
+    es6-promise "^3.0.2"
+    js-yaml "^3.4.6"
+    ono "^2.0.1"
 
 json-schema@0.2.3:
   version "0.2.3"
@@ -3006,6 +3024,14 @@ locate-path@^2.0.0:
 lodash.cond@^4.3.0:
   version "4.5.2"
   resolved "http://registry.npm.taobao.org/lodash.cond/download/lodash.cond-4.5.2.tgz#f471a1da486be60f6ab955d17115523dd1d255d5"
+
+lodash.get@^4.1.2:
+  version "4.4.2"
+  resolved "http://registry.npm.taobao.org/lodash.get/download/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+
+lodash.isequal@^4.4.0:
+  version "4.5.0"
+  resolved "http://registry.npm.taobao.org/lodash.isequal/download/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
 
 lodash.reduce@4.6.0:
   version "4.6.0"
@@ -3332,6 +3358,10 @@ onetime@^1.0.0:
 only@0.0.2:
   version "0.0.2"
   resolved "http://registry.npm.taobao.org/only/download/only-0.0.2.tgz#2afde84d03e50b9a8edc444e30610a70295edfb4"
+
+ono@^2.0.1:
+  version "2.2.4"
+  resolved "http://registry.npm.taobao.org/ono/download/ono-2.2.4.tgz#f6c1d9ea64da07a54863986535da3de67e502696"
 
 optimist@0.2:
   version "0.2.8"
@@ -4152,6 +4182,27 @@ supports-color@^3.1.2:
   dependencies:
     has-flag "^1.0.0"
 
+swagger-methods@^1.0.0:
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/swagger-methods/download/swagger-methods-1.0.0.tgz#b39c77957d305a6535c0a1e015081185b99d61fc"
+
+swagger-parser@^3.4.1:
+  version "3.4.1"
+  resolved "http://registry.npm.taobao.org/swagger-parser/download/swagger-parser-3.4.1.tgz#0290529dbae254d178b442a95df60d23d142301d"
+  dependencies:
+    call-me-maybe "^1.0.1"
+    debug "^2.2.0"
+    es6-promise "^3.0.2"
+    json-schema-ref-parser "^1.4.1"
+    ono "^2.0.1"
+    swagger-methods "^1.0.0"
+    swagger-schema-official "2.0.0-bab6bed"
+    z-schema "^3.16.1"
+
+swagger-schema-official@2.0.0-bab6bed:
+  version "2.0.0-bab6bed"
+  resolved "http://registry.npm.taobao.org/swagger-schema-official/download/swagger-schema-official-2.0.0-bab6bed.tgz#70070468d6d2977ca5237b2e519ca7d06a2ea3fd"
+
 symbol-tree@^3.2.1:
   version "3.2.2"
   resolved "http://registry.npm.taobao.org/symbol-tree/download/symbol-tree-3.2.2.tgz#ae27db38f660a7ae2e1c3b7d1bc290819b8519e6"
@@ -4392,6 +4443,10 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "~1.0.0"
     spdx-expression-parse "~1.0.0"
 
+validator@^6.0.0:
+  version "6.3.0"
+  resolved "http://registry.npm.taobao.org/validator/download/validator-6.3.0.tgz#47ce23ed8d4eaddfa9d4b8ef0071b6cf1078d7c8"
+
 vary@^1.0.0:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/vary/download/vary-1.1.1.tgz#67535ebb694c1d52257457984665323f587e8d37"
@@ -4572,3 +4627,13 @@ yargs@~3.10.0:
     cliui "^2.1.0"
     decamelize "^1.0.0"
     window-size "0.1.0"
+
+z-schema@^3.16.1:
+  version "3.18.2"
+  resolved "http://registry.npm.taobao.org/z-schema/download/z-schema-3.18.2.tgz#e422196b5efe60b46adef3c3f2aef2deaa911161"
+  dependencies:
+    lodash.get "^4.1.2"
+    lodash.isequal "^4.4.0"
+    validator "^6.0.0"
+  optionalDependencies:
+    commander "^2.7.1"
