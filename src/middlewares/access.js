@@ -1,11 +1,18 @@
 
+import jwt from 'jsonwebtoken';
+
 export default function accessMiddleware(securities) {
 	return async (ctx, next) => {
 		if (securities.length) {
-			const accessToken = ctx.request.get('X-ACCESS-TOKEN');
+			console.log('securities', securities);
+			const token = ctx.request.get('X-ACCESS-TOKEN');
 
-			console.log('X-ACCESS-TOKEN', accessToken);
-			ctx.throw(401, 'access_denied');
+			const user = jwt.verify(token, 'fork');
+
+			ctx.clay.user = user;
+
+			// console.log('X-ACCESS-TOKEN', token);
+			// ctx.throw(401, 'access_denied');
 		}
 		await next();
 	};

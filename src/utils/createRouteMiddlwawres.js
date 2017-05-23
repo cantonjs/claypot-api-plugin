@@ -12,7 +12,7 @@ export default function createRouteMiddlwawres(method, path, fullPath) {
 	if (securityNames.length) {
 		const securities = securityNames.map((name) => securityDefs[name]);
 		spec.addSecurityParameters(fullPath, method, securities);
-		middlewares.unshift(accessMiddleware(securityNames));
+		middlewares.unshift(accessMiddleware(securities));
 	}
 
 	if (derefPath.parameters) {
