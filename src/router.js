@@ -4,6 +4,7 @@ import Router from 'koa-router';
 import mount from 'koa-mount';
 import bodyParser from 'koa-bodyparser';
 import createRouteMiddlwawres from './utils/createRouteMiddlwawres';
+import error from './middlewares/error';
 
 const getBodyParserConfig = (config) => {
 	const { consumes = [], bodyParser: bodyParserConfig } = config;
@@ -24,7 +25,10 @@ const getBodyParserConfig = (config) => {
 export default function router(routes, config) {
 	const app = new Koa();
 
-	app.use(bodyParser(getBodyParserConfig(config)));
+	app
+		.use(bodyParser(getBodyParserConfig(config)))
+		.use(error())
+	;
 
 	routes.forEach(({ path, metaData }) => {
 		const childApp = new Koa();

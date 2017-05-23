@@ -20,16 +20,28 @@ const ensureSecurityField = function ensureSecurityField(spec) {
 };
 
 const ensureResponseField = (spec) => {
-	const { responses = {} } = spec;
-	if (!responses || !responses[400]) {
+	let { responses = {} } = spec;
+	const schema = {
+		$ref: '#/definitions/DefaultErrorResponse',
+	};
+	if (!responses[400]) {
 		responses[400] = {
 			description: 'Payload Error',
-			schema: {
-				$ref: '#/definitions/DefaultErrorResponse',
-			},
+			schema,
 		};
-		spec.responses = responses;
 	}
+
+
+	// TODO: should only inject 401 when Security is required
+	if (!responses[401]) {
+		responses[401] = {
+			description: 'Access Denied',
+			schema,
+		};
+	}
+
+
+	spec.responses = responses;
 	return spec;
 };
 
@@ -109,14 +121,6 @@ class Spec {
 				return parameter;
 			});
 		}
-
-		// if (Array.isArray(parameters)) {
-		// 	parameters.filter(Boolean).forEach((parameter) => {
-		// 		const { in: field, name } = parameter;
-		// 	});
-		// }
-
-		// data.parameters = parameters;
 
 		const spec = { tags: [name], ...data };
 		ensureSecurityField(spec);

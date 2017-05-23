@@ -8,7 +8,6 @@ const getKeyMap = (ctx) => ({
 
 export default function paramsMiddleware(params) {
 	return async (ctx, next) => {
-		console.log('params', params);
 		const keyMap = getKeyMap(ctx);
 		ctx.clay.params = params.reduce((obj, { key, field, name }) => {
 			obj[key] = keyMap[field](name);
