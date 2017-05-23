@@ -21,6 +21,10 @@ export default class ApiClaypotPlugin {
 	middleware(app) {
 		const { config, routes } = this;
 		app
+			.use(async (ctx, next) => {
+				ctx.clay = ctx.claypot = {};
+				await next();
+			})
 			.mount(config.docPath, doc(config))
 			.mount(config.basePath, router(routes, config))
 		;

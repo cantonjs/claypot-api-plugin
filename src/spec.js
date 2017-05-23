@@ -59,7 +59,7 @@ class Spec {
 		this._claypotConfig = claypotConfig;
 		this._paths = {};
 		this._json = null;
-		this._securities = null;
+		this._securityDefs = null;
 		this._dereference = null;
 		await this._readSpecFile();
 	}
@@ -95,6 +95,29 @@ class Spec {
 		if (this._json) { return; }
 
 		const paths = this._paths[path] || (this._paths[path] = {});
+
+		if (data.params || data.param) {
+			data.parameters = data.params || data.param;
+		}
+
+		if (isObject(data.parameters)) {
+			const { parameters } = data;
+			data.parameters = Object.keys(parameters).map((name) => {
+				const parameter = parameters[name];
+				parameter._var = name;
+				if (!parameter.name) { parameter.name = name; }
+				return parameter;
+			});
+		}
+
+		// if (Array.isArray(parameters)) {
+		// 	parameters.filter(Boolean).forEach((parameter) => {
+		// 		const { in: field, name } = parameter;
+		// 	});
+		// }
+
+		// data.parameters = parameters;
+
 		const spec = { tags: [name], ...data };
 		ensureSecurityField(spec);
 		ensureResponseField(spec);
@@ -149,7 +172,7 @@ class Spec {
 	}
 
 	getSecurityDefs() {
-		if (this._securities) { return this._securities; }
+		if (this._securityDefs) { return this._securityDefs; }
 
 		const { securities } = this._config;
 		forEach(securities, (name, key) => {
@@ -157,11 +180,31 @@ class Spec {
 				securities[key] = {
 					type: 'apiKey',
 					in: 'header',
+					description: 'Access token',
 					name,
 				};
 			}
 		});
-		return (this._securities = securities);
+		return (this._securityDefs = securities);
+	}
+
+	addSecurityParameters(path, method, securities) {
+		const pathSpec = this.getPath(path, method);
+		const { parameters = [] } = pathSpec;
+		securities.forEach((security) => {
+			const { name, description } = security;
+			const hasExists = parameters.some((param) =>
+				param.name === name && param.in === security.in
+			);
+			if (!hasExists) {
+				parameters.push({
+					name,
+					in: security.in,
+					type: 'string',
+					description,
+				});
+			}
+		});
 	}
 
 	toJSON() {
@@ -186,7 +229,7 @@ class Spec {
 	alloc() {
 		this._dereference = null;
 		this._paths = {};
-		this._securities = null;
+		this._securityDefs = null;
 		this._config = {};
 		this._claypotConfig = {};
 	}
