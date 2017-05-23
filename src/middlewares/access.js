@@ -1,5 +1,5 @@
 
-import jwt from 'jsonwebtoken';
+// import spec from '../spec';
 
 export default function accessMiddleware(securities) {
 	return async (ctx, next) => {
@@ -7,12 +7,9 @@ export default function accessMiddleware(securities) {
 			console.log('securities', securities);
 			const token = ctx.request.get('X-ACCESS-TOKEN');
 
-			const user = jwt.verify(token, 'fork');
-
+			const { security, user } = await ctx.clay.verify(token);
+			console.log('securityName', security);
 			ctx.clay.user = user;
-
-			// console.log('X-ACCESS-TOKEN', token);
-			// ctx.throw(401, 'access_denied');
 		}
 		await next();
 	};

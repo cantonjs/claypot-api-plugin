@@ -73,6 +73,7 @@ class Spec {
 		this._json = null;
 		this._securityDefs = null;
 		this._dereference = null;
+		this.securityNames = [];
 		await this._readSpecFile();
 	}
 
@@ -110,6 +111,8 @@ class Spec {
 
 		if (data.params || data.param) {
 			data.parameters = data.params || data.param;
+			delete data.params;
+			delete data.param;
 		}
 
 		if (isObject(data.parameters)) {
@@ -118,6 +121,7 @@ class Spec {
 				const parameter = parameters[name];
 				parameter._var = name;
 				if (!parameter.name) { parameter.name = name; }
+				if (!parameter.in) { parameter.in = 'body'; }
 				return parameter;
 			});
 		}
@@ -225,6 +229,7 @@ class Spec {
 		});
 		spec.paths = this._paths;
 		spec.securityDefinitions = this.getSecurityDefs(config);
+		this.securityNames = Object.keys(spec.securityDefinitions);
 		spec = setRefs(spec);
 
 		return (this._json = spec);

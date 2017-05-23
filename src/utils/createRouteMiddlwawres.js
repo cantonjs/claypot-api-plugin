@@ -27,5 +27,11 @@ export default function createRouteMiddlwawres(method, path, fullPath) {
 		middlewares.push(paramsMiddleware(params));
 	}
 
+	// TODO
+	// try {
+	// 	console.log('derefPath', derefPath.parameters[0]);
+	// }
+	// catch (err) {}
+
 	return middlewares;
 }

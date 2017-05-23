@@ -2,32 +2,18 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import mount from 'koa-mount';
-import bodyParser from 'koa-bodyparser';
 import createRouteMiddlwawres from './utils/createRouteMiddlwawres';
 import error from './middlewares/error';
-
-const getBodyParserConfig = (config) => {
-	const { consumes = [], bodyParser: bodyParserConfig } = config;
-	const enableTypes = [];
-	if (consumes.includes('application/json')) {
-		enableTypes.push('json');
-	}
-	if (consumes.includes('application/x-www-urlencoded')) {
-		enableTypes.push('form');
-	}
-
-	return {
-		enableTypes,
-		...bodyParserConfig,
-	};
-};
+import body from './middlewares/body';
+import jwt from './middlewares/jwt';
 
 export default function router(routes, config) {
 	const app = new Koa();
 
 	app
-		.use(bodyParser(getBodyParserConfig(config)))
 		.use(error())
+		.use(body(config))
+		.use(jwt(config))
 	;
 
 	routes.forEach(({ path, metaData }) => {

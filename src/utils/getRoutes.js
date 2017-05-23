@@ -4,6 +4,7 @@ import httpMethodsWhiteList from './httpMethodsWhiteList';
 import mapModules from './mapModules';
 import convertURL from './convertURL';
 import spec from '../spec';
+import auth from '../auth';
 
 function RouterMeta(config, name, path) {
 	this._config = config;
@@ -29,6 +30,9 @@ httpMethodsWhiteList.forEach((method) => {
 
 export default function getRoutes(config = {}, claypotConfig) {
 	const controllers = mapModules(config.controllersPath, claypotConfig.root);
+	if (config.useDefaultAuthRoute) {
+		controllers.push({ name: 'auth', module: auth });
+	}
 	const routes = [];
 	controllers
 		.forEach(({ name, module }) => {

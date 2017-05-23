@@ -7,10 +7,14 @@ export default function getConfig(config = {}) {
 		docPath: '/doc',
 		controllersPath: './apis',
 		definitionsPath: './defs',
-		securities: {},
+		securities: {
+			defaults: 'X-ACCESS-TOKEN',
+		},
 		consumes: ['application/json', 'application/x-www-urlencoded'],
 		produces: ['application/json'],
 		bodyParser: {},
+		secret: 'claypot',
+		useDefaultAuthRoute: true,
 		...config,
 	};
 
