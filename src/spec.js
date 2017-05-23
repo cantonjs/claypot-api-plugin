@@ -6,6 +6,7 @@ import { logger } from 'claypot';
 import SwaggerParser from 'swagger-parser';
 import { readJson } from 'fs-extra';
 import { join } from 'path';
+import fetch from 'node-fetch';
 
 const ensureSecurityField = function ensureSecurityField(spec) {
 	if (spec && Array.isArray(spec.security)) {
@@ -67,8 +68,14 @@ class Spec {
 		const { spec } = this._config;
 		if (isString(spec)) {
 			try {
-				const { root } = this._claypotConfig;
-				this._json = await readJson(join(root, spec));
+				if (/^https?:\/\//i.test(spec)) {
+					const res = await fetch(spec);
+					this._json = await res.json();
+				}
+				else {
+					const { root } = this._claypotConfig;
+					this._json = await readJson(join(root, spec));
+				}
 			}
 			catch (err) {
 				logger.error(`Failed to read spec file: "${spec}"`);
