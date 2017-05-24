@@ -1,6 +1,13 @@
 
 export default {
 	'/': {
+		params: [
+			{
+				name: 'fork',
+				in: 'header',
+				'x-var': 'fork',
+			}
+		],
 		post: {
 			summary: 'Create a new user',
 			security: ['defaults'],
@@ -42,16 +49,10 @@ export default {
 	'/:id': {
 		delete: {
 			summary: 'Delete a user by id',
-			security: ['admin'],
+			security: ['*admin'],
 			params: {
 				id: {
 					in: 'path',
-					required: true,
-				},
-				token: {
-					name: 'X-ACCESS-TOKEN',
-					in: 'header',
-					type: 'string',
 					required: true,
 				},
 			},

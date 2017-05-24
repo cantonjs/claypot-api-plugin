@@ -1,16 +1,11 @@
 
-const getKeyMap = (ctx) => ({
-	path: (name) => ctx.params[name],
-	body: () => ctx.request.body,
-	query: (name) => ctx.query[name],
-	header: (name) => ctx.request.get(name),
-});
+import getParamValue from '../utils/getParamValue';
 
 export default function paramsMiddleware(params) {
 	return async (ctx, next) => {
-		const keyMap = getKeyMap(ctx);
+		const getValue = getParamValue(ctx);
 		ctx.clay.params = params.reduce((obj, { key, field, name }) => {
-			obj[key] = keyMap[field](name);
+			obj[key] = getValue(field, name);
 			return obj;
 		}, {});
 		await next();

@@ -3,6 +3,7 @@ export default function clayMiddleware() {
 	return async (ctx, next) => {
 		const clay = {
 			ctx,
+			next,
 			throw: ctx.throw,
 		};
 		ctx.clay = ctx.claypot = clay;

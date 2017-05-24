@@ -1,15 +1,20 @@
 
-// import spec from '../spec';
+import getParamValue from '../utils/getParamValue';
+import uniqLocations from '../utils/uniqLocations';
 
 export default function accessMiddleware(securities) {
 	return async (ctx, next) => {
 		if (securities.length) {
-			console.log('securities', securities);
-			const token = ctx.request.get('X-ACCESS-TOKEN');
+			const getToken = getParamValue(ctx);
+			const verifies = uniqLocations(securities).map((security) => {
+				const token = getToken(security.in, security.name);
+				return token && ctx.clay.verify(token);
+			}).filter(Boolean);
 
-			const { security, user } = await ctx.clay.verify(token);
-			console.log('securityName', security);
-			ctx.clay.user = user;
+			const decodes = await Promise.all(verifies);
+
+			// TODO
+			console.log('decodes', decodes);
 		}
 		await next();
 	};

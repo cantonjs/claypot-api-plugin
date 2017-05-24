@@ -1,49 +1,15 @@
 
 import mapModules from './utils/mapModules';
 import ensureAbsolutePath from './utils/ensureAbsolutePath';
+import uniqLocations from './utils/uniqLocations';
+import { convertToSwaggerPath } from './utils/convertPath';
 import { forEach, isString, isObject } from 'lodash';
 import { logger } from 'claypot';
 import SwaggerParser from 'swagger-parser';
 import { readJson } from 'fs-extra';
 import { join } from 'path';
 import fetch from 'node-fetch';
-
-const ensureSecurityField = function ensureSecurityField(spec) {
-	if (spec && Array.isArray(spec.security)) {
-		spec.security.forEach((security, index) => {
-			if (isString(security)) {
-				spec.security[index] = { [security]: [] };
-			}
-		});
-	}
-	return spec;
-};
-
-const ensureResponseField = (spec) => {
-	let { responses = {} } = spec;
-	const schema = {
-		$ref: '#/definitions/DefaultErrorResponse',
-	};
-	if (!responses[400]) {
-		responses[400] = {
-			description: 'Payload Error',
-			schema,
-		};
-	}
-
-
-	// TODO: should only inject 401 when Security is required
-	if (!responses[401]) {
-		responses[401] = {
-			description: 'Access Denied',
-			schema,
-		};
-	}
-
-
-	spec.responses = responses;
-	return spec;
-};
+import { PARAM_VAR, REQUIRED_SEC } from './constants';
 
 const setRefs = function setRefs(spec) {
 	if (Array.isArray(spec)) {
@@ -65,6 +31,12 @@ const setRefs = function setRefs(spec) {
 	return spec;
 };
 
+const ensureGet = (object = {}, key, Type = Object) => {
+	const val = object[key];
+	if (val) { return val; }
+	else { return (object[key] = new Type()); }
+};
+
 class Spec {
 	async init(config, claypotConfig) {
 		this._config = config;
@@ -74,10 +46,10 @@ class Spec {
 		this._securityDefs = null;
 		this._dereference = null;
 		this.securityNames = [];
-		await this._readSpecFile();
+		await this.readSpecFile();
 	}
 
-	async _readSpecFile() {
+	async readSpecFile() {
 		const { spec } = this._config;
 		if (isString(spec)) {
 			try {
@@ -101,47 +73,143 @@ class Spec {
 
 	async genDereferenceAsync() {
 		if (this._dereference) { return this._dereference; }
-		return (this._dereference = await new SwaggerParser().parse(this.toJSON()));
+		this._dereference = await new SwaggerParser().dereference(this.toJSON());
+		return this._dereference;
 	}
 
-	addPath(name, path, method, data) {
-		if (this._json) { return; }
+	uniqParams(spec) {
+		spec.parameters = uniqLocations(spec.parameters);
+	}
 
-		const paths = this._paths[path] || (this._paths[path] = {});
-
-		if (data.params || data.param) {
-			data.parameters = data.params || data.param;
-			delete data.params;
-			delete data.param;
+	ensureParamsField(spec) {
+		if (spec.params || spec.param) {
+			spec.parameters = spec.params || spec.param;
+			delete spec.params;
+			delete spec.param;
 		}
 
-		if (isObject(data.parameters)) {
-			const { parameters } = data;
-			data.parameters = Object.keys(parameters).map((name) => {
+		const { parameters } = spec;
+
+		if (!Array.isArray(parameters) && isObject(parameters)) {
+			spec.parameters = Object.keys(parameters).map((name) => {
 				const parameter = parameters[name];
-				parameter._var = name;
+				parameter[PARAM_VAR] = name;
 				if (!parameter.name) { parameter.name = name; }
 				if (!parameter.in) { parameter.in = 'body'; }
 				return parameter;
 			});
 		}
 
-		const spec = { tags: [name], ...data };
-		ensureSecurityField(spec);
-		ensureResponseField(spec);
-		paths[method] = spec;
+		return spec;
+	}
+
+	addParamsToPath(newSpec, distPath) {
+		this.ensureParamsField(newSpec);
+		const parameters = ensureGet(distPath, 'parameters', Array);
+		parameters.push(
+			...newSpec.parameters,
+		);
+	}
+
+	ensureSecurityField(spec) {
+		const convertRequiredSecurity = (sec) => {
+			const name = Object.keys(sec)[0];
+			if (name && name.charAt(0) === '*') {
+				const requiredSecurity = ensureGet(spec, REQUIRED_SEC, Array);
+				const realName = name.slice(1);
+				requiredSecurity.push(realName);
+				return { [realName]: sec[name] };
+			}
+			return sec;
+		};
+
+		if (spec && Array.isArray(spec.security)) {
+			const { security } = spec;
+			security.forEach((sec, index) => {
+				if (isString(sec)) {
+					security[index] = { [sec]: [] };
+				}
+				security[index] = convertRequiredSecurity(security[index]);
+			});
+		}
+		return spec;
+	}
+
+	addSecurityToPath(newSpec, distPath) {
+		this.ensureSecurityField(newSpec);
+		const security = ensureGet(distPath, 'security');
+		Object.assign(security, newSpec);
+	}
+
+	ensureResponseField(spec) {
+		let { responses = {} } = spec;
+		const schema = {
+			$ref: '#/definitions/DefaultErrorResponse',
+		};
+		if (!responses[400]) {
+			responses[400] = {
+				description: 'Payload Error',
+				schema,
+			};
+		}
+
+
+		// TODO: should only inject 401 when Security is required
+		if (!responses[401]) {
+			responses[401] = {
+				description: 'Access Denied',
+				schema,
+			};
+		}
+
+
+		spec.responses = responses;
+		return spec;
+	}
+
+	addPath(name, path, pathSpec, method) {
+		const rootPath = ensureGet(this._paths, convertToSwaggerPath(path));
+		this.ensureParamsField(pathSpec);
+		this.uniqParams(pathSpec);
+		this.ensureSecurityField(pathSpec);
+		this.ensureResponseField(pathSpec);
+		const spec = { tags: [name], ...pathSpec };
+		if (method) { rootPath[method] = spec; }
+		else { Object.assign(rootPath, spec); }
 	}
 
 	getPath(path, method) {
+		path = convertToSwaggerPath(path);
+
 		try {
-			return this._dereference.paths[path][method];
+			const required = REQUIRED_SEC;
+			const deref = this._dereference;
+			const rootPathDeref = deref.paths[path];
+			const { parameters } = rootPathDeref;
+			const pathDeref = rootPathDeref[method];
+
+			if (parameters && parameters.length) {
+				ensureGet(pathDeref, 'parameters', Array).push(...parameters);
+				this.uniqParams(pathDeref);
+			}
+
+			const { security } = pathDeref;
+			if (!security) {
+				pathDeref.security = rootPathDeref.security || deref.security;
+			}
+			if (security && security.length && !pathDeref[required]) {
+				pathDeref[required] = rootPathDeref[required] || deref[required];
+			}
+
+			return pathDeref;
 		}
 		catch (err) {
+			logger.debug(err);
 			return {};
 		}
 	}
 
-	_getDefaultSpec() {
+	getDefaultSpec() {
 		const config = this._config;
 		const claypotConfig = this._claypotConfig;
 
@@ -165,18 +233,14 @@ class Spec {
 
 		if (config.defaultSecurity) {
 			spec.security = config.defaultSecurity;
-			ensureSecurityField(spec);
+			this.ensureSecurityField(spec);
 		}
 
 		return spec;
 	}
 
-	getSecurityNames(security) {
-		const get = () => {
-			if (security && security.length) { return security; }
-			return this._dereference.security || [];
-		};
-		return get().map((o) => Object.keys(o)[0]);
+	getSecurityNames(security = []) {
+		return security.map((o) => Object.keys(o)[0]);
 	}
 
 	getSecurityDefs() {
@@ -196,9 +260,9 @@ class Spec {
 		return (this._securityDefs = securities);
 	}
 
-	addSecurityParameters(path, method, securities) {
-		const pathSpec = this.getPath(path, method);
-		const { parameters = [] } = pathSpec;
+	addSecurityParameters(pathDeref, securities) {
+		const { parameters = [] } = pathDeref;
+		const requiredSecurity = pathDeref[REQUIRED_SEC] || [];
 		securities.forEach((security) => {
 			const { name, description } = security;
 			const hasExists = parameters.some((param) =>
@@ -210,6 +274,7 @@ class Spec {
 					in: security.in,
 					type: 'string',
 					description,
+					required: requiredSecurity.includes(security.securityName),
 				});
 			}
 		});
@@ -220,7 +285,7 @@ class Spec {
 
 		const config = this._config;
 		const claypotConfig = this._claypotConfig;
-		let spec = this._getDefaultSpec();
+		let spec = this.getDefaultSpec();
 
 		const defs = mapModules(config.definitionsPath, claypotConfig.root);
 		const builtInDefs = mapModules('defs', __dirname);

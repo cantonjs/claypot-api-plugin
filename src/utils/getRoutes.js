@@ -2,7 +2,6 @@
 import ensureAbsolutePath from './ensureAbsolutePath';
 import httpMethodsWhiteList from './httpMethodsWhiteList';
 import mapModules from './mapModules';
-import convertURL from './convertURL';
 import spec from '../spec';
 import auth from '../auth';
 import { forEach } from 'lodash';
@@ -13,18 +12,24 @@ export default function getRoutes(config = {}, claypotConfig) {
 		const rootPath = ensureAbsolutePath(name);
 		forEach(routeModule, (meta, childPath) => {
 			const path = rootPath + childPath;
-			const specPath = convertURL(path);
+			const pathGlobalSpecs = {};
+			const methods = [];
 			forEach(meta, (data = {}, key) => {
-				const { ctrl, controller, ...pathSpec } = data;
-				const ctrls = [].concat(ctrl || controller);
 				if (httpMethodsWhiteList.includes(key)) {
-					const method = key;
-					spec.addPath(name, specPath, method, pathSpec);
-					routes.push({ path, method, ctrls, pathSpec });
+					methods.push({ method: key, data });
 				}
 				else {
-					// TODO: handle other keys
+					pathGlobalSpecs[key] = data;
 				}
+			});
+
+			spec.addPath(name, path, pathGlobalSpecs);
+
+			methods.forEach(({ method, data }) => {
+				const { ctrl, controller, ...pathSpec } = data;
+				const ctrls = [].concat(ctrl || controller);
+				spec.addPath(name, path, pathSpec, method);
+				routes.push({ path, method, ctrls, pathSpec });
 			});
 		});
 	};
