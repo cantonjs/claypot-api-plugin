@@ -3,7 +3,6 @@ import ensureAbsolutePath from './ensureAbsolutePath';
 import httpMethodsWhiteList from './httpMethodsWhiteList';
 import mapModules from './mapModules';
 import spec from '../spec';
-import auth from '../auth';
 import { forEach } from 'lodash';
 
 export default function getRoutes(config = {}, claypotConfig) {
@@ -35,9 +34,6 @@ export default function getRoutes(config = {}, claypotConfig) {
 	};
 
 	const controllers = mapModules(config.controllersPath, claypotConfig.root);
-	if (config.useDefaultAuthRoute) {
-		controllers.push({ name: 'auth', module: auth });
-	}
 	controllers
 		.forEach(({ name, module }) => {
 			addRoute(name, module);

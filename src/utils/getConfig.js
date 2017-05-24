@@ -14,7 +14,6 @@ export default function getConfig(config = {}) {
 		produces: ['application/json'],
 		bodyParser: {},
 		secret: 'claypot',
-		useDefaultAuthRoute: true,
 		...config,
 	};
 
