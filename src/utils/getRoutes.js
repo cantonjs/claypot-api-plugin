@@ -7,28 +7,6 @@ import spec from '../spec';
 import auth from '../auth';
 import { forEach } from 'lodash';
 
-// function RouterMeta(config, name, path) {
-// 	this._config = config;
-// 	this._name = name;
-// 	this._absolutePath = path;
-// 	this.route = { path, metaData: [] };
-// };
-
-// httpMethodsWhiteList.forEach((method) => {
-// 	RouterMeta.prototype[method] = function (path, pathSpec, ...middlewares) {
-// 		path = ensureAbsolutePath(path);
-// 		const fullPath = convertURL(this._absolutePath + path);
-// 		this.route.metaData.push({
-// 			fullPath,
-// 			path,
-// 			method,
-// 			middlewares,
-// 		});
-// 		spec.addPath(this._name, fullPath, method, pathSpec);
-// 		return this;
-// 	};
-// });
-
 export default function getRoutes(config = {}, claypotConfig) {
 	const routes = [];
 	const addRoute = function addRoute(name, routeModule = {}) {

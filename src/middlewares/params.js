@@ -13,7 +13,6 @@ export default function paramsMiddleware(params) {
 			obj[key] = keyMap[field](name);
 			return obj;
 		}, {});
-		ctx.$params = ctx.clay.params;
 		await next();
 	};
 }
