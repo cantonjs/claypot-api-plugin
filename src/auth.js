@@ -1,7 +1,7 @@
 
-export default function auth(router) {
-	return router
-		.post('/login', {
+export default {
+	'/login': {
+		post: {
 			summary: 'Login',
 			security: [],
 			params: {
@@ -20,12 +20,13 @@ export default function auth(router) {
 						}
 					}
 				}
+			},
+			async ctrl() {
+				const { params, sign } = this;
+				console.log('params', params);
+				const accessToken = await sign(params.body);
+				return { accessToken };
 			}
-		}, async (ctx) => {
-			const { params, sign } = ctx.clay;
-			console.log('params', params);
-			const accessToken = await sign(params.body);
-			ctx.body = { accessToken };
-		})
-	;
-}
+		}
+	}
+};

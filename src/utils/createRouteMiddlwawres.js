@@ -3,15 +3,15 @@ import accessMiddleware from '../middlewares/access';
 import paramsMiddleware from '../middlewares/params';
 import spec from '../spec';
 
-export default function createRouteMiddlwawres(method, path, fullPath) {
+export default function createRouteMiddlwawres(method, path) {
 	const middlewares = [];
-	const derefPath = spec.getPath(fullPath, method);
+	const derefPath = spec.getPath(path, method);
 	const securityNames = spec.getSecurityNames(derefPath.security);
 	const securityDefs = spec.getSecurityDefs();
 
 	if (securityNames.length) {
 		const securities = securityNames.map((name) => securityDefs[name]);
-		spec.addSecurityParameters(fullPath, method, securities);
+		spec.addSecurityParameters(path, method, securities);
 		middlewares.unshift(accessMiddleware(securities));
 	}
 
