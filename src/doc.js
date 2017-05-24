@@ -9,7 +9,7 @@ import spec from './spec';
 let tpl;
 const readTemplateOnce = async () => {
 	if (tpl) { return tpl; }
-	return (tpl = readFile(join(__dirname, './doc.html'), 'utf-8'));
+	return (tpl = readFile(join(__dirname, '..', 'template.html'), 'utf-8'));
 };
 
 export default function doc(config) {
