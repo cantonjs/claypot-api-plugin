@@ -902,9 +902,9 @@ circular-json@^0.3.1:
   version "0.3.1"
   resolved "http://registry.npm.taobao.org/circular-json/download/circular-json-0.3.1.tgz#be8b36aefccde8b3ca7aa2d6afc07a37242c0d2d"
 
-claypot@^0.0.0-beta.19:
-  version "0.0.0-beta.19"
-  resolved "http://registry.npm.taobao.org/claypot/download/claypot-0.0.0-beta.19.tgz#addafa51d1376adc9fba6ee0e88fea725635a7cf"
+claypot@^0.0.0-beta.20:
+  version "0.0.0-beta.20"
+  resolved "http://registry.npm.taobao.org/claypot/download/claypot-0.0.0-beta.20.tgz#bbdce1f7f572eb41b24a7a1e1693785f891c72e5"
   dependencies:
     chalk "^1.1.3"
     find-port-sync "^1.0.0"
@@ -919,6 +919,7 @@ claypot@^0.0.0-beta.19:
     koa-favicon "^2.0.0"
     koa-helmet "^3.1.0"
     koa-mount "^3.0.0"
+    koa-response-time "^2.0.0"
     koa-router "^7.1.1"
     koa-static "^3.0.0"
     koa-weixin-jssdk "^1.2.0"
@@ -1042,12 +1043,12 @@ connect-history-api-fallback@^1.1.0:
   version "1.3.0"
   resolved "http://registry.npm.taobao.org/connect-history-api-fallback/download/connect-history-api-fallback-1.3.0.tgz#e51d17f8f0ef0db90a64fdb47de3051556e9f169"
 
-connect@3.6.0:
-  version "3.6.0"
-  resolved "http://registry.npm.taobao.org/connect/download/connect-3.6.0.tgz#f09a4f7dcd17324b663b725c815bdb1c4158a46e"
+connect@3.6.2:
+  version "3.6.2"
+  resolved "http://registry.npm.taobao.org/connect/download/connect-3.6.2.tgz#694e8d20681bfe490282c8ab886be98f09f42fe7"
   dependencies:
-    debug "2.6.1"
-    finalhandler "1.0.0"
+    debug "2.6.7"
+    finalhandler "1.0.3"
     parseurl "~1.3.1"
     utils-merge "1.0.0"
 
@@ -1197,11 +1198,11 @@ debug@2.2.0, debug@~2.2.0:
   dependencies:
     ms "0.7.1"
 
-debug@2.6.1:
-  version "2.6.1"
-  resolved "http://registry.npm.taobao.org/debug/download/debug-2.6.1.tgz#79855090ba2c4e3115cc7d8769491d58f0491351"
+debug@2.6.7:
+  version "2.6.7"
+  resolved "http://registry.npm.taobao.org/debug/download/debug-2.6.7.tgz#92bad1f6d05bbb6bba22cca88bcd0ec894c2861e"
   dependencies:
-    ms "0.7.2"
+    ms "2.0.0"
 
 debug@^2.6.0, debug@^2.6.1:
   version "2.6.3"
@@ -1571,8 +1572,8 @@ esutils@^2.0.2:
   resolved "http://registry.npm.taobao.org/esutils/download/esutils-2.0.2.tgz#0abf4f1caa5bcb1f7a9d8acc6dea4faaa04bac9b"
 
 etag@^1.3.0:
-  version "1.7.0"
-  resolved "http://registry.npm.taobao.org/etag/download/etag-1.7.0.tgz#03d30b5f67dd6e632d2945d30d6652731a34d5d8"
+  version "1.8.0"
+  resolved "http://registry.npm.taobao.org/etag/download/etag-1.8.0.tgz#6f631aef336d6c46362b51764044ce216be3c051"
 
 event-emitter@~0.3.5:
   version "0.3.5"
@@ -1712,11 +1713,11 @@ fill-range@^2.1.0:
     repeat-element "^1.1.2"
     repeat-string "^1.5.2"
 
-finalhandler@1.0.0:
-  version "1.0.0"
-  resolved "http://registry.npm.taobao.org/finalhandler/download/finalhandler-1.0.0.tgz#b5691c2c0912092f18ac23e9416bde5cd7dc6755"
+finalhandler@1.0.3:
+  version "1.0.3"
+  resolved "http://registry.npm.taobao.org/finalhandler/download/finalhandler-1.0.3.tgz#ef47e77950e999780e86022a560e3217e0d0cc89"
   dependencies:
-    debug "2.6.1"
+    debug "2.6.7"
     encodeurl "~1.0.1"
     escape-html "~1.0.3"
     on-finished "~2.3.0"
@@ -1895,17 +1896,15 @@ get-my-ip@0.0.1:
   resolved "http://registry.npm.taobao.org/get-my-ip/download/get-my-ip-0.0.1.tgz#1e1a62b3bcdc1ff954067bc414fa0bc8a53eb2a5"
 
 get-port-cli@^1.0.0:
-  version "1.0.0"
-  resolved "http://registry.npm.taobao.org/get-port-cli/download/get-port-cli-1.0.0.tgz#526d60e8759d3eca2cdd15682cc1db6cd1310b71"
+  version "1.1.0"
+  resolved "http://registry.npm.taobao.org/get-port-cli/download/get-port-cli-1.1.0.tgz#f334b136995eb52e5a5d5c10e3c6e59e18a946ef"
   dependencies:
-    get-port "^2.0.0"
+    get-port "^3.0.0"
     meow "^3.4.2"
 
-get-port@^2.0.0:
-  version "2.1.0"
-  resolved "http://registry.npm.taobao.org/get-port/download/get-port-2.1.0.tgz#8783f9dcebd1eea495a334e1a6a251e78887ab1a"
-  dependencies:
-    pinkie-promise "^2.0.0"
+get-port@^3.0.0:
+  version "3.1.0"
+  resolved "http://registry.npm.taobao.org/get-port/download/get-port-3.1.0.tgz#ef01b18a84ca6486970ff99e54446141a73ffd3e"
 
 get-stdin@^4.0.1:
   version "4.0.1"
@@ -2055,10 +2054,10 @@ helmet-csp@2.4.0:
     platform "1.3.3"
 
 helmet@^3.0.0:
-  version "3.6.0"
-  resolved "http://registry.npm.taobao.org/helmet/download/helmet-3.6.0.tgz#cf391ecdba9c8a8ee7aec66cff4f147797e204d3"
+  version "3.6.1"
+  resolved "http://registry.npm.taobao.org/helmet/download/helmet-3.6.1.tgz#91f3aa7fa4c94671595fb568dfd8c28489a388be"
   dependencies:
-    connect "3.6.0"
+    connect "3.6.2"
     dns-prefetch-control "0.1.0"
     dont-sniff-mimetype "1.0.0"
     expect-ct "0.1.0"
@@ -2108,8 +2107,8 @@ html-encoding-sniffer@^1.0.1:
     whatwg-encoding "^1.0.1"
 
 http-ask@^0.0.0-rc1:
-  version "0.0.0-rc1"
-  resolved "http://registry.npm.taobao.org/http-ask/download/http-ask-0.0.0-rc1.tgz#90d1580c53111387272f58ae144eb4fd4ae5b4fd"
+  version "0.0.0-rc4"
+  resolved "http://registry.npm.taobao.org/http-ask/download/http-ask-0.0.0-rc4.tgz#a0a5e2eef2ba508e804f17628b63e3567450845a"
   dependencies:
     isomorphic-fetch "^2.2.1"
     object-assign "^4.1.0"
@@ -2146,8 +2145,8 @@ http-errors@~1.4.0:
     statuses ">= 1.2.1 < 2"
 
 http-proxy@^1.12.0:
-  version "1.15.2"
-  resolved "http://registry.npm.taobao.org/http-proxy/download/http-proxy-1.15.2.tgz#642fdcaffe52d3448d2bda3b0079e9409064da31"
+  version "1.16.2"
+  resolved "http://registry.npm.taobao.org/http-proxy/download/http-proxy-1.16.2.tgz#06dff292952bf64dbe8471fa9df73066d4f37742"
   dependencies:
     eventemitter3 "1.x.x"
     requires-port "1.x.x"
@@ -2849,8 +2848,8 @@ jsprim@^1.2.2:
     verror "1.3.6"
 
 jssha@^2.0.2:
-  version "2.2.0"
-  resolved "http://registry.npm.taobao.org/jssha/download/jssha-2.2.0.tgz#87dcf60821dc3bec593f3855bbebccd276aacc1c"
+  version "2.3.0"
+  resolved "http://registry.npm.taobao.org/jssha/download/jssha-2.3.0.tgz#bb375f545c59f3ffda7c1e80fd0b3c0867586ab8"
 
 jwa@^1.1.4:
   version "1.1.5"
@@ -2929,8 +2928,8 @@ koa-convert@^1.2.0:
     koa-compose "^3.0.0"
 
 koa-error@^3.0.0:
-  version "3.0.0"
-  resolved "http://registry.npm.taobao.org/koa-error/download/koa-error-3.0.0.tgz#8bdb6f5b746b2a4f42b83f47c856291bb0eb17b1"
+  version "3.0.1"
+  resolved "http://registry.npm.taobao.org/koa-error/download/koa-error-3.0.1.tgz#74ddb209ac3393aea5e59f3e1819adc2f9e43a98"
   dependencies:
     consolidate "^0.14.1"
     lodash "4"
@@ -2965,10 +2964,15 @@ koa-mount@^3.0.0:
     debug "^2.6.1"
     koa-compose "^3.2.1"
 
+koa-response-time@^2.0.0:
+  version "2.0.0"
+  resolved "http://registry.npm.taobao.org/koa-response-time/download/koa-response-time-2.0.0.tgz#9590b54284dc59a9ec10f80b69048a66188342bb"
+
 koa-router@^5.3.0:
-  version "5.4.0"
-  resolved "http://registry.npm.taobao.org/koa-router/download/koa-router-5.4.0.tgz#2c4e67b0126b97263fdf24493ab2efb4c4c661c3"
+  version "5.4.2"
+  resolved "http://registry.npm.taobao.org/koa-router/download/koa-router-5.4.2.tgz#4dbdba7e715953d5686c03b7c3fdbd214631f870"
   dependencies:
+    co "^4.6.0"
     debug "^2.2.0"
     http-errors "^1.3.1"
     methods "^1.0.1"
@@ -3101,12 +3105,12 @@ lodash@4, lodash@^4.0.0, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.4, lodash@
   resolved "http://registry.npm.taobao.org/lodash/download/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
 log4js@^1.0.1:
-  version "1.0.1"
-  resolved "http://registry.npm.taobao.org/log4js/download/log4js-1.0.1.tgz#faf64c1056b6352a5fbbf0a93b61a9979a8422cc"
+  version "1.1.1"
+  resolved "http://registry.npm.taobao.org/log4js/download/log4js-1.1.1.tgz#c21d29c7604089e4f255833e7f94b3461de1ff43"
   dependencies:
     debug "^2.2.0"
     semver "^5.3.0"
-    streamroller "^0.2.1"
+    streamroller "^0.4.0"
 
 longest@^1.0.1:
   version "1.0.1"
@@ -3188,8 +3192,8 @@ micromatch@^2.1.5, micromatch@^2.3.11:
     regex-cache "^0.4.2"
 
 "mime-db@>= 1.27.0 < 2":
-  version "1.27.0"
-  resolved "http://registry.npm.taobao.org/mime-db/download/mime-db-1.27.0.tgz#820f572296bbd20ec25ed55e5b5de869e5436eb1"
+  version "1.28.0"
+  resolved "http://registry.npm.taobao.org/mime-db/download/mime-db-1.28.0.tgz#fedd349be06d2865b7fc57d837c6de4f17d7ac3c"
 
 mime-db@~1.25.0:
   version "1.25.0"
@@ -3243,7 +3247,7 @@ ms@0.7.2:
   version "0.7.2"
   resolved "http://registry.npm.taobao.org/ms/download/ms-0.7.2.tgz#ae25cf2512b3885a1d95d7f037868d8431124765"
 
-ms@^2.0.0:
+ms@2.0.0, ms@^2.0.0:
   version "2.0.0"
   resolved "http://registry.npm.taobao.org/ms/download/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
@@ -3839,8 +3843,8 @@ redent@^1.0.0:
     strip-indent "^1.0.1"
 
 redis-commands@^1.2.0:
-  version "1.3.0"
-  resolved "http://registry.npm.taobao.org/redis-commands/download/redis-commands-1.3.0.tgz#4307d8094aee1315829ab6729b37b99f62365d63"
+  version "1.3.1"
+  resolved "http://registry.npm.taobao.org/redis-commands/download/redis-commands-1.3.1.tgz#81d826f45fa9c8b2011f4cd7a0fe597d241d442b"
 
 redis-parser@^2.5.0:
   version "2.6.0"
@@ -4172,12 +4176,13 @@ sshpk@^1.7.0:
   version "1.3.1"
   resolved "http://registry.npm.taobao.org/statuses/download/statuses-1.3.1.tgz#faf51b9eb74aaef3b3acf4ad5f61abf24cb7b93e"
 
-streamroller@^0.2.1:
-  version "0.2.1"
-  resolved "http://registry.npm.taobao.org/streamroller/download/streamroller-0.2.1.tgz#95173f1a5b811c291e7cdfd600002fdbe063c9c8"
+streamroller@^0.4.0:
+  version "0.4.1"
+  resolved "http://registry.npm.taobao.org/streamroller/download/streamroller-0.4.1.tgz#d435bd5974373abd9bd9068359513085106cc05f"
   dependencies:
     date-format "^0.0.0"
     debug "^0.7.2"
+    mkdirp "^0.5.1"
     readable-stream "^1.1.7"
 
 string-length@^1.0.1:
@@ -4559,8 +4564,8 @@ whatwg-encoding@^1.0.1:
     iconv-lite "0.4.13"
 
 whatwg-fetch@>=0.10.0:
-  version "2.0.1"
-  resolved "http://registry.npm.taobao.org/whatwg-fetch/download/whatwg-fetch-2.0.1.tgz#078b9461bbe91cea73cbce8bb122a05f9e92b772"
+  version "2.0.3"
+  resolved "http://registry.npm.taobao.org/whatwg-fetch/download/whatwg-fetch-2.0.3.tgz#9c84ec2dcf68187ff00bc64e1274b442176e1c84"
 
 whatwg-url@^4.3.0:
   version "4.7.1"
