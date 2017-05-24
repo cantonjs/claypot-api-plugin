@@ -3,6 +3,13 @@
   "description": "Claypot API plugin",
   "version": "0.0.0-0",
   "main": "lib/index",
+  "files": [
+    "LICENSE.md",
+    "README.md",
+    "assets",
+    "lib",
+    "template.html"
+  ],
   "scripts": {
     "start": "claypot start",
     "test": "cross-env CLAYPOT_DEV=true jest",
