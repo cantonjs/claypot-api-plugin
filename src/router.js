@@ -2,6 +2,7 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import createRouteMiddlwawres from './utils/createRouteMiddlwawres';
+import clay from './middlewares/clay';
 import error from './middlewares/error';
 import body from './middlewares/body';
 import jwt from './middlewares/jwt';
@@ -19,6 +20,7 @@ export default function router(routes, config) {
 	});
 
 	return new Koa()
+		.use(clay())
 		.use(error())
 		.use(body(config))
 		.use(jwt(config))
