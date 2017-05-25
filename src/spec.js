@@ -183,8 +183,8 @@ class Spec {
 
 		try {
 			const required = REQUIRED_SEC;
-			const deref = this._dereference;
-			const rootPathDeref = deref.paths[path];
+			const rootDeref = this._dereference;
+			const rootPathDeref = rootDeref.paths[path];
 			const { parameters } = rootPathDeref;
 			const pathDeref = rootPathDeref[method];
 
@@ -193,12 +193,12 @@ class Spec {
 				this.uniqParams(pathDeref);
 			}
 
-			const { security } = pathDeref;
-			if (!security) {
-				pathDeref.security = rootPathDeref.security || deref.security;
+			if (!pathDeref.security) {
+				pathDeref.security = rootPathDeref.security || rootDeref.security;
 			}
+			const { security } = pathDeref;
 			if (security && security.length && !pathDeref[required]) {
-				pathDeref[required] = rootPathDeref[required] || deref[required];
+				pathDeref[required] = rootPathDeref[required] || rootDeref[required];
 			}
 
 			return pathDeref;
