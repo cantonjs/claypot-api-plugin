@@ -14,7 +14,7 @@ export default function accessMiddleware(securities) {
 			const decodes = await Promise.all(verifies);
 
 			// TODO
-			console.log('decodes', decodes);
+			// console.log('decodes', decodes);
 		}
 		await next();
 	};
