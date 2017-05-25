@@ -9,7 +9,7 @@ export default function validationMiddleware(pathDeref) {
 
 		(pathDeref.parameters || []).forEach((param) => {
 			const val = getValue(param.in, param.name);
-			if (param.required && isNil(val)) {
+			if (param.required && (isNil(val) || /^\s*$/.test(val))) {
 				ctx.throw(405, `'${param.name}' in ${param.in} field is required.`);
 			}
 		});
