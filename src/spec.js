@@ -92,10 +92,13 @@ class Spec {
 
 		if (!Array.isArray(parameters) && isObject(parameters)) {
 			spec.parameters = Object.keys(parameters).map((name) => {
-				const parameter = parameters[name];
+				let parameter = parameters[name];
+				if (!parameter) { parameter = {}; }
+				if (isString(parameter)) { parameter = { in: parameter }; }
 				parameter[PARAM_VAR] = name;
 				if (!parameter.name) { parameter.name = name; }
 				if (!parameter.in) { parameter.in = 'body'; }
+				if (!parameter.type) { parameter.type = 'string'; }
 				return parameter;
 			});
 		}
