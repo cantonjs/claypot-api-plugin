@@ -4,7 +4,7 @@ export default function clayMiddleware() {
 		const clay = {
 			ctx,
 			next,
-			states: [],
+			states: {},
 			header: ctx.header,
 			throw: ctx.throw,
 		};
