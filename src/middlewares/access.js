@@ -11,10 +11,7 @@ export default function accessMiddleware(securities) {
 				return token && ctx.clay.verify(token);
 			}).filter(Boolean);
 
-			const decodes = await Promise.all(verifies);
-
-			// TODO
-			// console.log('decodes', decodes);
+			ctx.clay.states = await Promise.all(verifies);
 		}
 		await next();
 	};
