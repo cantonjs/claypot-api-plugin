@@ -1,16 +1,18 @@
 
-import getParamValue from '../utils/getParamValue';
-import { isNil } from 'lodash';
+import tv4 from 'tv4';
+import isEmptyValue from '../utils/isEmptyValue';
+import { isObject, forEach } from 'lodash';
 
-export default function validationMiddleware(pathDeref) {
-
+export default function validationMiddleware() {
 	return async (ctx, next) => {
-		const getValue = getParamValue(ctx);
+		forEach(ctx.clay.__params, ({ value, spec }) => {
+			if (spec.required && isEmptyValue(value)) {
+				ctx.throw(405, `'${spec.name}' in ${spec.in} field is required.`);
+			}
 
-		(pathDeref.parameters || []).forEach((param) => {
-			const val = getValue(param.in, param.name);
-			if (param.required && (isNil(val) || /^\s*$/.test(val))) {
-				ctx.throw(405, `'${param.name}' in ${param.in} field is required.`);
+			if (spec.in === 'body' && isObject(spec.schema)) {
+				const isValid = tv4.validate(value, spec.schema);
+				if (!isValid) { throw tv4.error; }
 			}
 		});
 

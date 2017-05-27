@@ -1,20 +1,28 @@
 
-import getParamValue from '../utils/getParamValue';
+// import getParamValue from '../utils/getParamValue';
 import uniqLocations from '../utils/uniqLocations';
+import { find } from 'lodash';
 
-export default function accessMiddleware(securities, paramToIgnores) {
-	if (securities.length) {
-		securities = uniqLocations(securities).map((security) => {
-			paramToIgnores.push(security);
-			return security;
-		});
-	}
+export default function accessMiddleware(securities) {
+	// if (securities.length) {
+	// 	securities = uniqLocations(securities).map((security) => {
+	// 		paramToIgnores.push(security);
+	// 		return security;
+	// 	});
+	// }
 
 	return async (ctx, next) => {
 		if (securities.length) {
-			const getToken = getParamValue(ctx);
-			const verifies = securities.map((security) => {
-				const token = getToken(security.in, security.name);
+
+			const verifies = uniqLocations(securities).map((security) => {
+				const param = find(ctx.clay.__params, ({ spec }) =>
+					spec.in === security.in && spec.name === security.name
+				);
+
+				// delete secerity param
+				delete ctx.clay.__params[param.name];
+
+				const token = param.value;
 				return token && ctx.clay.verify(token);
 			}).filter(Boolean);
 

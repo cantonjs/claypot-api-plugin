@@ -1,4 +1,5 @@
 
+import parserMiddleware from '../middlewares/parser';
 import accessMiddleware from '../middlewares/access';
 import validationMiddleware from '../middlewares/validation';
 import paramsMiddleware from '../middlewares/params';
@@ -8,7 +9,10 @@ import { differenceWith } from 'lodash';
 
 export default function createRouteMiddlwawres(method, path) {
 	const pathDeref = spec.getPath(path, method);
-	const middlewares = [validationMiddleware(pathDeref)];
+	const middlewares = [
+		parserMiddleware(pathDeref),
+		validationMiddleware(pathDeref),
+	];
 	const paramToIgnores = [];
 
 	const securityNames = spec.getSecurityNames(pathDeref.security);

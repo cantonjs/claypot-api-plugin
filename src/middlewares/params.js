@@ -1,14 +1,12 @@
 
-import getParamValue from '../utils/getParamValue';
-import { isUndefined } from 'lodash';
+import { reduce } from 'lodash';
+import isEmptyValue from '../utils/isEmptyValue';
 
-export default function paramsMiddleware(params) {
+export default function paramsMiddleware() {
 	return async (ctx, next) => {
-		const getValue = getParamValue(ctx);
-		ctx.clay.params = params.reduce((obj, { key, field, name }) => {
-			const value = getValue(field, name);
-			if (!isUndefined(value)) { obj[key] = value; }
-			return obj;
+		ctx.clay.params = reduce(ctx.clay.__params, (params, { value, name }) => {
+			if (!isEmptyValue(value)) { params[name] = value; }
+			return params;
 		}, {});
 		await next();
 	};

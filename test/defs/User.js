@@ -1,33 +1,33 @@
 
 export default {
-	'type': 'object',
-	'properties': {
-		'id': {
-			'type': 'integer',
-			'format': 'int64'
+	type: 'object',
+	properties: {
+		id: {
+			type: 'integer',
+			format: 'int64'
 		},
-		'username': {
-			'type': 'string'
+		username: {
+			type: 'string'
 		},
-		'firstName': {
-			'type': 'string'
+		firstName: {
+			type: 'string',
 		},
-		'lastName': {
-			'type': 'string'
+		lastName: {
+			type: 'string'
 		},
-		'email': {
-			'type': 'string'
+		email: {
+			type: 'string'
 		},
-		'password': {
-			'type': 'string'
+		password: {
+			type: 'string'
 		},
-		'phone': {
-			'type': 'string'
+		phone: {
+			type: 'string'
 		},
-		'userStatus': {
-			'type': 'integer',
-			'format': 'int32',
-			'description': 'User Status'
+		userStatus: {
+			type: 'integer',
+			format: 'int32',
+			description: 'User Status'
 		}
 	},
 };

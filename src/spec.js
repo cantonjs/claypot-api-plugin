@@ -98,7 +98,7 @@ class Spec {
 				parameter[PARAM_VAR] = name;
 				if (!parameter.name) { parameter.name = name; }
 				if (!parameter.in) { parameter.in = 'body'; }
-				if (!parameter.type) { parameter.type = 'string'; }
+				if (!parameter.type && !parameter.schema) { parameter.type = 'string'; }
 				return parameter;
 			});
 		}
