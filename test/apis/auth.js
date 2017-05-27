@@ -25,7 +25,7 @@ export default {
 				const { params, sign } = this;
 				console.log('params', params);
 				const accessToken = await sign(params.body);
-				return { accessToken };
+				return accessToken;
 			}
 		}
 	}

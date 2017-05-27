@@ -4,9 +4,14 @@ export default function clayMiddleware() {
 		const clay = {
 			ctx,
 			next,
+			states: {},
+			header: ctx.header,
 			throw: ctx.throw,
 		};
-		ctx.clay = ctx.claypot = clay;
+		ctx.clay = {
+			...ctx.clay,
+			...clay,
+		};
 		await next();
 		if (clay.body && !ctx.body) {
 			ctx.body = clay.body;

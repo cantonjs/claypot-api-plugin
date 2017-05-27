@@ -36,6 +36,20 @@ export default {
 					in: 'query',
 					description: 'Get user by name',
 				},
+				tags: {
+					in: 'query',
+					type: 'array',
+					description: 'List of tag names',
+					collectionFormat: 'pipes',
+					maxItems: 5,
+					minItems: 2,
+					items: {
+						type: 'string',
+						minLength: 2,
+						maxItems: 5,
+						minItems: 2,
+					},
+				},
 			},
 			async controller() {
 				console.log('this.params', this.params);
