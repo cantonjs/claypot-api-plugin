@@ -9,7 +9,7 @@ import SwaggerParser from 'swagger-parser';
 import { readJson } from 'fs-extra';
 import { join } from 'path';
 import fetch from 'node-fetch';
-import { PARAM_VAR, REQUIRED_SEC } from './constants';
+import { PARAM_VAR, REQUIRED_SEC, MODEL, OPERATOR } from './constants';
 
 const setRefs = function setRefs(spec) {
 	if (Array.isArray(spec)) {
@@ -170,15 +170,35 @@ class Spec {
 		return spec;
 	}
 
+	ensureXModelField(pathSpec, name) {
+		if (!pathSpec[MODEL]) {
+			let model = (pathSpec.model || name) + '';
+			pathSpec[MODEL] = model.charAt(0).toUpperCase() + model.slice(1);
+			delete pathSpec.model;
+		}
+	}
+
+	maybeXOperatorField(pathSpec) {
+		if (pathSpec.operator) {
+			pathSpec[OPERATOR] = pathSpec.operator;
+			delete pathSpec.operator;
+		}
+	}
+
 	addPath(name, path, pathSpec, method) {
 		const rootPath = ensureGet(this._paths, convertToSwaggerPath(path));
 		this.ensureParamsField(pathSpec);
 		this.uniqParams(pathSpec);
 		this.ensureSecurityField(pathSpec);
 		this.ensureResponseField(pathSpec);
+		this.ensureXModelField(pathSpec, name);
 		const spec = { tags: [name], ...pathSpec };
-		if (method) { rootPath[method] = spec; }
+		if (method) {
+			rootPath[method] = spec;
+			this.maybeXOperatorField(spec);
+		}
 		else { Object.assign(rootPath, spec); }
+		return spec;
 	}
 
 	getPath(path, method) {

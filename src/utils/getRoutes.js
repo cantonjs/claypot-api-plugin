@@ -25,9 +25,9 @@ export default function getRoutes(config = {}, claypotConfig) {
 			spec.addPath(name, path, pathGlobalSpecs);
 
 			methods.forEach(({ method, data }) => {
-				const { ctrl, controller, ...pathSpec } = data;
-				const ctrls = [].concat(ctrl || controller);
-				spec.addPath(name, path, pathSpec, method);
+				const { ctrl, controller, ...otherSpec } = data;
+				let ctrls = [].concat(ctrl || controller).filter(Boolean);
+				const pathSpec = spec.addPath(name, path, otherSpec, method);
 				routes.push({ path, method, ctrls, pathSpec });
 			});
 		});

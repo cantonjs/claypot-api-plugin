@@ -51,13 +51,15 @@ export default {
 					},
 				},
 			},
-			async controller() {
-				console.log('this.params', this.params);
-				return {
-					code: 200,
-					message: 'get user',
-				};
-			},
+			// model: 'Test',
+			operator: 'hello',
+			// async controller() {
+			// 	console.log('this.params', this.params);
+			// 	return {
+			// 		code: 200,
+			// 		message: 'get user',
+			// 	};
+			// },
 		},
 	},
 	'/:id': {
