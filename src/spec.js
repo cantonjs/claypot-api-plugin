@@ -106,6 +106,7 @@ class Spec {
 		return spec;
 	}
 
+	// TODO: remove
 	addParamsToPath(newSpec, distPath) {
 		this.ensureParamsField(newSpec);
 		const parameters = ensureGet(distPath, 'parameters', Array);
