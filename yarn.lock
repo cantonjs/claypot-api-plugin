@@ -909,9 +909,9 @@ circular-json@^0.3.1:
   version "0.3.1"
   resolved "http://registry.npm.taobao.org/circular-json/download/circular-json-0.3.1.tgz#be8b36aefccde8b3ca7aa2d6afc07a37242c0d2d"
 
-claypot@^0.0.0-beta.29:
-  version "0.0.0-beta.29"
-  resolved "http://registry.npm.taobao.org/claypot/download/claypot-0.0.0-beta.29.tgz#1a0a55ce88f3a3de95475f7c6c05cd2edcee1638"
+claypot@^0.0.0-beta.32:
+  version "0.0.0-beta.32"
+  resolved "http://registry.npm.taobao.org/claypot/download/claypot-0.0.0-beta.32.tgz#ea1618d73662d7e91a59fa96a4b53cc392633b22"
   dependencies:
     cache-manager "^2.4.0"
     chalk "^1.1.3"

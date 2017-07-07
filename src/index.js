@@ -11,7 +11,7 @@ export default class ApiClaypotPlugin {
 		this.claypotConfig = claypotConfig;
 	}
 
-	async initAsync() {
+	async initServer() {
 		const { config, claypotConfig } = this;
 		await spec.init(config, claypotConfig);
 		this.routes = getRoutes(config, claypotConfig);
