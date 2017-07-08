@@ -6,24 +6,17 @@ import clay from './middlewares/clay';
 import error from './middlewares/error';
 import body from './middlewares/body';
 import jwt from './middlewares/jwt';
-import operation from './middlewares/operation';
-import { MODEL, OPERATOR } from './constants';
 
 export default function router(routes, config) {
 	const router = new Router();
-	routes.forEach(({ path, method, ctrls, pathSpec }) => {
-		const middlewares = createRouteMiddlwawres(method, path);
+	routes.forEach(({ path, method, ctrls }) => {
 		const controllers = ctrls.map((ctrl) => async (ctx, next) => {
 			const result = await ctrl.call(ctx.clay, ctx, next);
 			if (result && !ctx.body) { ctx.body = result; }
 			return result;
 		});
-
-		if (!controllers.length && pathSpec[MODEL] && pathSpec[OPERATOR]) {
-			controllers.push(operation(pathSpec[MODEL], pathSpec[OPERATOR]));
-		}
-
-		router[method](path, ...middlewares, ...controllers);
+		const middlewares = createRouteMiddlwawres(method, path, controllers);
+		router[method](path, ...middlewares);
 	});
 
 	return new Koa()

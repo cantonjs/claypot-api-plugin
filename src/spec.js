@@ -2,6 +2,7 @@
 import mapModules from './utils/mapModules';
 import ensureAbsolutePath from './utils/ensureAbsolutePath';
 import uniqLocations from './utils/uniqLocations';
+import capitalize from './utils/capitalize';
 import { convertToSwaggerPath } from './utils/convertPath';
 import { forEach, isString, isObject } from 'lodash';
 import { logger } from 'claypot';
@@ -9,7 +10,7 @@ import SwaggerParser from 'swagger-parser';
 import { readJson } from 'fs-extra';
 import { join } from 'path';
 import fetch from 'node-fetch';
-import { PARAM_VAR, REQUIRED_SEC, MODEL, OPERATOR } from './constants';
+import { NAME, PARAM_VAR, REQUIRED_SEC, MODEL, OPERATOR } from './constants';
 
 const setRefs = function setRefs(spec) {
 	if (Array.isArray(spec)) {
@@ -106,15 +107,6 @@ class Spec {
 		return spec;
 	}
 
-	// TODO: remove
-	addParamsToPath(newSpec, distPath) {
-		this.ensureParamsField(newSpec);
-		const parameters = ensureGet(distPath, 'parameters', Array);
-		parameters.push(
-			...newSpec.parameters,
-		);
-	}
-
 	ensureSecurityField(spec) {
 		const convertRequiredSecurity = (sec) => {
 			const name = Object.keys(sec)[0];
@@ -171,34 +163,45 @@ class Spec {
 		return spec;
 	}
 
-	ensureXModelField(pathSpec, name) {
-		if (!pathSpec[MODEL]) {
-			let model = (pathSpec.model || name) + '';
-			pathSpec[MODEL] = model.charAt(0).toUpperCase() + model.slice(1);
+	ensureXNameField(pathSpec, name) {
+		if (!pathSpec[NAME]) { pathSpec[NAME] = capitalize(name); }
+		return pathSpec[NAME];
+	}
+
+	ensureXModelField(pathSpec) {
+		if (pathSpec.model) {
+			if (!pathSpec[MODEL]) {
+				pathSpec[MODEL] = capitalize(pathSpec.model);
+			}
 			delete pathSpec.model;
 		}
 	}
 
-	maybeXOperatorField(pathSpec) {
+	ensureXOperatorField(pathSpec) {
 		if (pathSpec.operator) {
-			pathSpec[OPERATOR] = pathSpec.operator;
+			if (!pathSpec[OPERATOR]) {
+				pathSpec[OPERATOR] = pathSpec.operator;
+			}
 			delete pathSpec.operator;
 		}
 	}
 
 	addPath(name, path, pathSpec, method) {
 		const rootPath = ensureGet(this._paths, convertToSwaggerPath(path));
+		const xName = this.ensureXNameField(pathSpec, name);
 		this.ensureParamsField(pathSpec);
 		this.uniqParams(pathSpec);
 		this.ensureSecurityField(pathSpec);
 		this.ensureResponseField(pathSpec);
-		this.ensureXModelField(pathSpec, name);
-		const spec = { tags: [name], ...pathSpec };
+		this.ensureXModelField(pathSpec);
+		const spec = { tags: [xName], ...pathSpec };
 		if (method) {
 			rootPath[method] = spec;
-			this.maybeXOperatorField(spec);
+			this.ensureXOperatorField(spec);
 		}
-		else { Object.assign(rootPath, spec); }
+		else {
+			Object.assign(rootPath, spec);
+		}
 		return spec;
 	}
 
@@ -206,23 +209,33 @@ class Spec {
 		path = convertToSwaggerPath(path);
 
 		try {
-			const required = REQUIRED_SEC;
 			const rootDeref = this._dereference;
 			const rootPathDeref = rootDeref.paths[path];
-			const { parameters } = rootPathDeref;
 			const pathDeref = rootPathDeref[method];
 
+			// ensure model
+			if (!pathDeref[MODEL]) {
+				pathDeref[MODEL] = rootPathDeref[MODEL] || rootPathDeref[NAME];
+			}
+
+			// ensure parameters
+			const { parameters } = rootPathDeref;
 			if (parameters && parameters.length) {
 				ensureGet(pathDeref, 'parameters', Array).push(...parameters);
 				this.uniqParams(pathDeref);
 			}
 
+			// ensure security
 			if (!pathDeref.security) {
 				pathDeref.security = rootPathDeref.security || rootDeref.security;
 			}
+
+			// ensure required security
+			const requiredSec = REQUIRED_SEC;
 			const { security } = pathDeref;
-			if (security && security.length && !pathDeref[required]) {
-				pathDeref[required] = rootPathDeref[required] || rootDeref[required];
+			if (security && security.length && !pathDeref[requiredSec]) {
+				const rSec = rootPathDeref[requiredSec] || rootDeref[requiredSec];
+				pathDeref[requiredSec] = rSec;
 			}
 
 			return pathDeref;

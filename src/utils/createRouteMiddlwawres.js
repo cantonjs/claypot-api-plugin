@@ -1,13 +1,14 @@
 
 import parserMiddleware from '../middlewares/parser';
 import accessMiddleware from '../middlewares/access';
+import operation from '../middlewares/operation';
 import validationMiddleware from '../middlewares/validation';
 import paramsMiddleware from '../middlewares/params';
-import { PARAM_VAR, REQUIRED_SEC } from '../constants';
+import { PARAM_VAR, OPERATOR, MODEL } from '../constants';
 import spec from '../spec';
 import { differenceWith } from 'lodash';
 
-export default function createRouteMiddlwawres(method, path) {
+export default function createRouteMiddlwawres(method, path, ctrls) {
 	const pathDeref = spec.getPath(path, method);
 	const middlewares = [
 		parserMiddleware(pathDeref),
@@ -42,6 +43,12 @@ export default function createRouteMiddlwawres(method, path) {
 		});
 
 		middlewares.push(paramsMiddleware(params));
+	}
+
+	middlewares.push(...ctrls);
+
+	if (pathDeref[MODEL] && pathDeref[OPERATOR]) {
+		middlewares.push(operation(pathDeref[MODEL], pathDeref[OPERATOR]));
 	}
 
 	return middlewares;
