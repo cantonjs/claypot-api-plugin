@@ -20,10 +20,8 @@ export default class ApiClaypotPlugin {
 
 	middleware(app) {
 		const { config, routes } = this;
-		app
-			.mount(config.docPath, doc(config))
-			.mount(config.basePath, router(routes, config))
-		;
+		if (config.docPath) { app.mount(config.docPath, doc(config)); }
+		app.mount(config.basePath, router(routes, config));
 		spec.alloc();
 	}
 }
