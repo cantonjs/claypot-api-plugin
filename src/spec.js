@@ -262,7 +262,8 @@ class Spec {
 			'basePath': ensureAbsolutePath(config.basePath),
 			'consumes': config.consumes,
 			'produces': config.produces,
-			'schemes': ['http', claypotConfig.ssl.enable && 'https'].filter(Boolean),
+			'schemes': config.schemas ||
+				['http', claypotConfig.ssl.enable && 'https'].filter(Boolean),
 			'paths': {},
 			'securityDefinitions': {},
 			'definitions': {},
