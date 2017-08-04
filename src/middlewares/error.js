@@ -1,5 +1,6 @@
 
-import { logger, isDev } from 'claypot';
+import { isDev } from 'claypot';
+import logger from '../utils/logger';
 
 export default function error() {
 	return async (ctx, next) => {

@@ -4,6 +4,7 @@ import router from './router';
 import getConfig from './utils/getConfig';
 import spec from './spec';
 import getRoutes from './utils/getRoutes';
+import logger from './utils/logger';
 
 export default class ApiClaypotPlugin {
 	constructor(config, claypotConfig) {
@@ -20,8 +21,13 @@ export default class ApiClaypotPlugin {
 
 	middleware(app) {
 		const { config, routes } = this;
-		if (config.docPath) { app.mount(config.docPath, doc(config)); }
+		if (config.docPath) {
+			app.mount(config.docPath, doc(config));
+			logger.debug(`doc mounted on "${config.docPath}"`);
+		}
 		app.mount(config.basePath, router(routes, config));
+		logger.debug(`api mounted on "${config.basePath}"`);
+
 		spec.alloc();
 	}
 }

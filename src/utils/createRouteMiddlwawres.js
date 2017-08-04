@@ -7,6 +7,7 @@ import paramsMiddleware from '../middlewares/params';
 import { PARAM_VAR, OPERATOR, MODEL } from '../constants';
 import spec from '../spec';
 import { differenceWith } from 'lodash';
+import logger from './logger';
 
 export default function createRouteMiddlwawres(method, path, ctrls) {
 	const pathDeref = spec.getPath(path, method);
@@ -45,10 +46,22 @@ export default function createRouteMiddlwawres(method, path, ctrls) {
 		middlewares.push(paramsMiddleware(params));
 	}
 
-	middlewares.push(...ctrls);
+	const handlers = [...ctrls];
 
 	if (pathDeref[MODEL] && pathDeref[OPERATOR]) {
-		middlewares.push(operation(pathDeref[MODEL], pathDeref[OPERATOR]));
+		handlers.push(operation(pathDeref[MODEL], pathDeref[OPERATOR]));
+	}
+
+	const fullRoutePath = `${method.toUpperCase()} ${path}`;
+
+	if (handlers.length) {
+		logger.trace(`route "${fullRoutePath}" registered`);
+		middlewares.push(...handlers);
+	}
+	else {
+		logger.warn(
+			`missing contorller or model operation on route "${fullRoutePath}"`,
+		);
 	}
 
 	return middlewares;

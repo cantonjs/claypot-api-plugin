@@ -25,7 +25,6 @@ export default {
 				}
 			},
 			async controller() {
-				console.log('this.params', this.params);
 				return { message: 'create user' };
 			},
 		},
@@ -54,7 +53,7 @@ export default {
 			model: 'Test',
 			operator: 'hello',
 			// async controller() {
-			// 	console.log('this.params', this.params);
+			// 	// console.log('this.params', this.params);
 			// 	return {
 			// 		code: 200,
 			// 		message: 'get user',
