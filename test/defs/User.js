@@ -4,7 +4,6 @@ export default {
 	properties: {
 		id: {
 			type: 'integer',
-			format: 'int64'
 		},
 		username: {
 			type: 'string'
@@ -26,7 +25,6 @@ export default {
 		},
 		userStatus: {
 			type: 'integer',
-			format: 'int32',
 			description: 'User Status'
 		}
 	},

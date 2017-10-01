@@ -1,7 +1,9 @@
 
-import tv4 from 'tv4';
+import Ajv from 'ajv';
 import isEmptyValue from '../utils/isEmptyValue';
 import { isObject, forEach } from 'lodash';
+
+const ajv = new Ajv();
 
 export default function validationMiddleware() {
 	return async (ctx, next) => {
@@ -11,8 +13,12 @@ export default function validationMiddleware() {
 			}
 
 			if (spec.in === 'body' && isObject(spec.schema)) {
-				const isValid = tv4.validate(value, spec.schema);
-				if (!isValid) { throw tv4.error; }
+				const isValid = ajv.validate(spec.schema, value);
+				if (!isValid) {
+					const error = new Error(ajv.errorsText());
+					error.errors = ajv.errors;
+					throw error;
+				}
 			}
 		});
 
