@@ -169,11 +169,9 @@ class Spec {
 	}
 
 	ensureXModelField(pathSpec) {
-		if (pathSpec.model) {
-			if (!pathSpec[MODEL]) {
-				pathSpec[MODEL] = capitalize(pathSpec.model);
-			}
-			delete pathSpec.model;
+		if (!pathSpec[MODEL] && pathSpec[NAME]) {
+			pathSpec[MODEL] = pathSpec.model || pathSpec[NAME];
+			Reflect.deleteProperty(pathSpec, 'model');
 		}
 	}
 
@@ -220,14 +218,6 @@ class Spec {
 			const rootDeref = this._dereference;
 			const rootPathDeref = rootDeref.paths[path];
 			const pathDeref = rootPathDeref[method];
-
-			// ensure model
-			if (!pathDeref[MODEL]) {
-
-				// console.log('\n\n\n\nrootDeref', rootDeref);
-
-				pathDeref[MODEL] = rootPathDeref[MODEL] || rootPathDeref[NAME];
-			}
 
 			// ensure parameters
 			const { parameters } = rootPathDeref;

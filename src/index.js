@@ -5,6 +5,7 @@ import getConfig from './utils/getConfig';
 import spec from './spec';
 import getRoutes from './utils/getRoutes';
 import logger from './utils/logger';
+import validateModels from './utils/validateModels';
 
 export default class ApiClaypotPlugin {
 	constructor(config, claypotConfig) {
@@ -16,7 +17,8 @@ export default class ApiClaypotPlugin {
 		const { config, claypotConfig } = this;
 		await spec.init(config, claypotConfig);
 		this.routes = getRoutes(config, claypotConfig);
-		await spec.genDereferenceAsync();
+		const deref = await spec.genDereferenceAsync();
+		if (!claypotConfig.production) { validateModels(deref.paths); }
 	}
 
 	middleware(app) {
