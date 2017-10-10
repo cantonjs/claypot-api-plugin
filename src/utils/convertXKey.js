@@ -1,7 +1,8 @@
 
+import { forEach } from 'lodash';
 import { NAME, PARAM_VAR, MODEL, OPERATOR, COERCION } from '../constants';
 
-export default function convertXKey(key) {
+export function convertXKey(key) {
 	switch (key) {
 		case 'name':
 			return NAME;
@@ -16,4 +17,15 @@ export default function convertXKey(key) {
 		default:
 			return key;
 	}
+}
+
+export function ensureSpec(spec = {}) {
+	forEach(spec, (val, key) => {
+		const convertedKey = convertXKey(key);
+		if (key !== convertedKey) {
+			spec[convertedKey] = val;
+			Reflect.deleteProperty(spec, key);
+		}
+	});
+	return spec;
 }

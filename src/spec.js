@@ -216,10 +216,8 @@ class Spec {
 
 	addPathMethod(method, ...args) {
 		const { spec, rootPath } = this.genRootPathSpec(...args);
-		if (method) {
-			rootPath[method] = spec;
-			this.ensureXOperatorField(spec);
-		}
+		rootPath[method] = spec;
+		this.ensureXOperatorField(spec);
 		return spec;
 	}
 

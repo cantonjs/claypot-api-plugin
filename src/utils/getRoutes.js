@@ -5,7 +5,7 @@ import mapModules from './mapModules';
 import spec from '../spec';
 import { forEach } from 'lodash';
 import logger from './logger';
-import convertXKey from './convertXKey';
+import { convertXKey, ensureSpec } from './convertXKey';
 
 export default function getRoutes(config = {}, claypotConfig) {
 	const routes = [];
@@ -34,23 +34,28 @@ export default function getRoutes(config = {}, claypotConfig) {
 		paths.forEach((childPath) => {
 			const meta = Object.assign({}, commons, routeModule[childPath]);
 			const path = rootPath + childPath;
-			const pathGlobalSpecs = {};
+			let pathCommonSpec = {};
 			const methods = [];
 			forEach(meta, (data = {}, key) => {
 				if (httpMethodsWhiteList.includes(key)) {
 					methods.push({ method: key, data });
 				}
 				else {
-					pathGlobalSpecs[key] = data;
+					pathCommonSpec[key] = data;
 				}
 			});
 
-			spec.addPath(name, path, pathGlobalSpecs);
+			ensureSpec(pathCommonSpec);
+			spec.addPath(name, path, pathCommonSpec);
 
 			methods.forEach(({ method, data }) => {
 				const { ctrl, controller, ...otherSpec } = data;
 				let ctrls = [].concat(ctrl || controller).filter(Boolean);
-				const pathSpec = spec.addPathMethod(method, name, path, otherSpec);
+				const pathMethodSpec = ensureSpec({
+					...pathCommonSpec,
+					...otherSpec,
+				});
+				const pathSpec = spec.addPathMethod(method, name, path, pathMethodSpec);
 				routes.push({ path, method, ctrls, pathSpec });
 			});
 		});

@@ -1,5 +1,6 @@
 
 export default {
+	'x-model': 'Test',
 	'/': {
 		params: [
 			{
@@ -50,7 +51,7 @@ export default {
 					},
 				},
 			},
-			model: 'Test',
+			// model: 'Test',
 			operator: 'hello',
 			// async controller() {
 			// 	// console.log('this.params', this.params);
