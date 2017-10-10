@@ -1,7 +1,7 @@
 
 import getParamValue from '../utils/getParamValue';
 import formatCollection from '../utils/formatCollection';
-import { PARAM_VAR } from '../constants';
+import { PARAM_VAR, COERCION } from '../constants';
 
 export default function parserMiddleware(pathDeref) {
 	return async (ctx, next) => {
@@ -27,6 +27,7 @@ export default function parserMiddleware(pathDeref) {
 		}
 
 		ctx.clay.__params = params;
+		ctx.clay.__coercion = pathDeref[COERCION];
 
 		await next();
 	};

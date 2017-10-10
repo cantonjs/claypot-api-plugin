@@ -1,5 +1,5 @@
 
-import { NAME, PARAM_VAR, MODEL, OPERATOR } from '../constants';
+import { NAME, PARAM_VAR, MODEL, OPERATOR, COERCION } from '../constants';
 
 export default function convertXKey(key) {
 	switch (key) {
@@ -11,6 +11,8 @@ export default function convertXKey(key) {
 			return PARAM_VAR;
 		case 'operator':
 			return OPERATOR;
+		case 'coercion':
+			return COERCION;
 		default:
 			return key;
 	}

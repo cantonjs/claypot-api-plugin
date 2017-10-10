@@ -3,11 +3,15 @@ import Ajv from 'ajv';
 import isEmptyValue from '../utils/isEmptyValue';
 import { isObject, forEach } from 'lodash';
 
-const ajv = new Ajv();
-
 export default function validationMiddleware() {
 	return async (ctx, next) => {
-		forEach(ctx.clay.__params, ({ value, spec }) => {
+		const { __params, __coercion } = ctx.clay;
+
+		const ajv = new Ajv({
+			coerceTypes: __coercion,
+		});
+
+		forEach(__params, ({ value, spec }) => {
 			if (spec.required && isEmptyValue(value)) {
 				ctx.throw(405, `'${spec.name}' in ${spec.in} field is required.`);
 			}

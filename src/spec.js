@@ -10,7 +10,9 @@ import SwaggerParser from 'swagger-parser';
 import { readJson } from 'fs-extra';
 import { join } from 'path';
 import fetch from 'node-fetch';
-import { NAME, PARAM_VAR, REQUIRED_SEC, MODEL, OPERATOR } from './constants';
+import {
+	NAME, PARAM_VAR, REQUIRED_SEC, MODEL, OPERATOR, COERCION,
+} from './constants';
 
 const setRefs = function setRefs(spec) {
 	if (Array.isArray(spec)) {
@@ -168,6 +170,15 @@ class Spec {
 		return pathSpec[NAME];
 	}
 
+	ensureXCoercionField(pathSpec) {
+		if (pathSpec.coercion !== undefined) {
+			if (pathSpec[COERCION] === undefined) {
+				pathSpec[COERCION] = pathSpec.coercion;
+			}
+			Reflect.deleteProperty(pathSpec, 'coercion');
+		}
+	}
+
 	ensureXModelField(pathSpec) {
 		if (!pathSpec[MODEL] && pathSpec[NAME]) {
 			pathSpec[MODEL] = pathSpec.model || pathSpec[NAME];
@@ -192,6 +203,7 @@ class Spec {
 		this.ensureSecurityField(pathSpec);
 		this.ensureResponseField(pathSpec);
 		this.ensureXModelField(pathSpec);
+		this.ensureXCoercionField(pathSpec);
 		const spec = { tags: [xName], ...pathSpec };
 		return { spec, rootPath };
 	}
@@ -224,6 +236,11 @@ class Spec {
 			if (parameters && parameters.length) {
 				ensureGet(pathDeref, 'parameters', Array).push(...parameters);
 				this.uniqParams(pathDeref);
+			}
+
+			// ensure coercion
+			if (!pathDeref[COERCION]) {
+				pathDeref[COERCION] = rootPathDeref[COERCION] || this._config.coercion;
 			}
 
 			// ensure security

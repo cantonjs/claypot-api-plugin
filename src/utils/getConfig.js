@@ -14,6 +14,7 @@ export default function getConfig(config = {}) {
 		produces: ['application/json'],
 		bodyParser: {},
 		secret: 'claypot',
+		coercion: false,
 		...config,
 	};
 
