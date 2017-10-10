@@ -1,6 +1,6 @@
 
 import { forEach } from 'lodash';
-import { NAME, PARAM_VAR, MODEL, OPERATOR, COERCION } from '../constants';
+import { NAME, MODEL, OPERATOR, COERCION } from '../constants';
 
 export function convertXKey(key) {
 	switch (key) {
@@ -8,8 +8,6 @@ export function convertXKey(key) {
 			return NAME;
 		case 'model':
 			return MODEL;
-		case 'params':
-			return PARAM_VAR;
 		case 'operator':
 			return OPERATOR;
 		case 'coercion':
