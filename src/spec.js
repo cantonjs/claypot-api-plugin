@@ -186,7 +186,7 @@ class Spec {
 		}
 	}
 
-	addPath(name, path, pathSpec, method) {
+	genRootPathSpec(name, path, pathSpec) {
 		const rootPath = ensureGet(this._paths, convertToSwaggerPath(path));
 		const xName = this.ensureXNameField(pathSpec, name);
 		this.ensureParamsField(pathSpec);
@@ -195,12 +195,20 @@ class Spec {
 		this.ensureResponseField(pathSpec);
 		this.ensureXModelField(pathSpec);
 		const spec = { tags: [xName], ...pathSpec };
+		return { spec, rootPath };
+	}
+
+	addPath(...args) {
+		const { spec, rootPath } = this.genRootPathSpec(...args);
+		Object.assign(rootPath, spec);
+		return spec;
+	}
+
+	addPathMethod(method, ...args) {
+		const { spec, rootPath } = this.genRootPathSpec(...args);
 		if (method) {
 			rootPath[method] = spec;
 			this.ensureXOperatorField(spec);
-		}
-		else {
-			Object.assign(rootPath, spec);
 		}
 		return spec;
 	}
@@ -215,6 +223,9 @@ class Spec {
 
 			// ensure model
 			if (!pathDeref[MODEL]) {
+
+				// console.log('\n\n\n\nrootDeref', rootDeref);
+
 				pathDeref[MODEL] = rootPathDeref[MODEL] || rootPathDeref[NAME];
 			}
 
