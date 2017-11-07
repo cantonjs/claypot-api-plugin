@@ -1017,9 +1017,9 @@ circular-json@^0.3.1:
   version "0.3.1"
   resolved "http://registry.npm.taobao.org/circular-json/download/circular-json-0.3.1.tgz#be8b36aefccde8b3ca7aa2d6afc07a37242c0d2d"
 
-claypot@^0.0.0-beta.49:
-  version "0.0.0-beta.49"
-  resolved "http://registry.npm.taobao.org/claypot/download/claypot-0.0.0-beta.49.tgz#f1353113d35cebf14f63a889043bb9b6de673e87"
+claypot@^0.0.0-beta.54:
+  version "0.0.0-beta.54"
+  resolved "http://registry.npm.taobao.org/claypot/download/claypot-0.0.0-beta.54.tgz#27888dc4a143d5354e65d79276e89087a6abcc62"
   dependencies:
     cache-manager "^2.4.0"
     chalk "^2.1.0"
@@ -1041,8 +1041,8 @@ claypot@^0.0.0-beta.49:
     koa-weixin-jssdk "^2.0.0"
     lodash "^4.17.2"
     output-host "^3.1.1"
-    pot-js "^0.0.0-beta.39"
-    pot-logger "^0.1.0"
+    pot-js "^0.0.0-beta.45"
+    pot-logger "^0.3.0"
     prop-types "^15.5.10"
     qiniu "^6.1.13"
     raw-body "^2.2.0"
@@ -3467,23 +3467,6 @@ log-update@^2.1.0:
     cli-cursor "^2.0.0"
     wrap-ansi "^3.0.1"
 
-log4js@^2.3.2:
-  version "2.3.3"
-  resolved "http://registry.npm.taobao.org/log4js/download/log4js-2.3.3.tgz#18bac0b5b1052d1078d25e7d9b0cf298f499d915"
-  dependencies:
-    date-format "^1.1.0"
-    debug "^2.6.8"
-    semver "^5.3.0"
-    streamroller "^0.5.2"
-  optionalDependencies:
-    axios "^0.15.3"
-    hipchat-notifier "^1.1.0"
-    loggly "^1.1.0"
-    mailgun-js "^0.7.0"
-    nodemailer "^2.5.0"
-    redis "^2.7.1"
-    slack-node "~0.2.0"
-
 log4js@^2.3.4:
   version "2.3.4"
   resolved "http://registry.npm.taobao.org/log4js/download/log4js-2.3.4.tgz#fad39928b28448755688f861139ddcee71b6357f"
@@ -4156,9 +4139,9 @@ pluralize@^1.2.1:
   version "1.2.1"
   resolved "http://registry.npm.taobao.org/pluralize/download/pluralize-1.2.1.tgz#d1a21483fd22bb41e58a12fa3421823140897c45"
 
-pot-js@^0.0.0-beta.39:
-  version "0.0.0-beta.41"
-  resolved "http://registry.npm.taobao.org/pot-js/download/pot-js-0.0.0-beta.41.tgz#b61a7eb8a3b068524756866dd06b53613454fe52"
+pot-js@^0.0.0-beta.45:
+  version "0.0.0-beta.45"
+  resolved "http://registry.npm.taobao.org/pot-js/download/pot-js-0.0.0-beta.45.tgz#a34e3fe53338dcb6da6de818f351d727f34c891d"
   dependencies:
     ajv "^5.2.3"
     chalk "^1.1.3"
@@ -4186,16 +4169,16 @@ pot-js@^0.0.0-beta.39:
     xtend "~2.1.1"
     yargs "^6.5.0"
 
-pot-logger@^0.1.0:
-  version "0.1.0"
-  resolved "http://registry.npm.taobao.org/pot-logger/download/pot-logger-0.1.0.tgz#adbf80a34a333d932704aeb9dcd277f89afb1ed1"
-  dependencies:
-    chalk "^2.0.1"
-    log4js "^2.3.2"
-
 pot-logger@^0.2.1:
   version "0.2.1"
   resolved "http://registry.npm.taobao.org/pot-logger/download/pot-logger-0.2.1.tgz#120b648026aebd5c1c5446c3ade44b7b58b1d07c"
+  dependencies:
+    chalk "^2.1.0"
+    log4js "^2.3.4"
+
+pot-logger@^0.3.0:
+  version "0.3.0"
+  resolved "http://registry.npm.taobao.org/pot-logger/download/pot-logger-0.3.0.tgz#b8652b7744029754a76b0e4d525053fc4b8952bf"
   dependencies:
     chalk "^2.1.0"
     log4js "^2.3.4"

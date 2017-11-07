@@ -1,5 +1,5 @@
 
-import { getModels } from 'claypot/lib/models';
+import { getModels } from 'claypot';
 import logger from './logger';
 
 export default function validateModels(paths) {
