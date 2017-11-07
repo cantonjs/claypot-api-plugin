@@ -39,7 +39,7 @@
     "swagger-parser": "^3.4.1"
   },
   "peerDependencies": {
-    "claypot": "^0.0.0-beta.49"
+    "claypot": "^0.0.0-beta.54"
   },
   "devDependencies": {
     "babel-cli": "^6.11.4",
