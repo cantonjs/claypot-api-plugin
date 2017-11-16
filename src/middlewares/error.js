@@ -4,12 +4,12 @@ import logger from '../utils/logger';
 
 export default function error() {
 	return async (ctx, next) => {
-		const { url, method } = ctx.req;
+		const { originalUrl, method } = ctx.request;
 		try {
 			await next();
 		}
 		catch (err) {
-			Object.assign(err, { url, method });
+			Object.assign(err, { url: originalUrl, method });
 			logger.error(err);
 			ctx.status = err.status || 400;
 			ctx.body = {
