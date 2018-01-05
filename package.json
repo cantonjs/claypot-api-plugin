@@ -36,6 +36,7 @@
     "lodash": "^4.17.4",
     "ms": "^2.0.0",
     "node-fetch": "^1.6.3",
+    "pluralize": "^7.0.0",
     "swagger-parser": "^3.4.1"
   },
   "peerDependencies": {

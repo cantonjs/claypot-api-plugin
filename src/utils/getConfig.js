@@ -15,6 +15,7 @@ export default function getConfig(config = {}) {
 		bodyParser: {},
 		secret: 'claypot',
 		coercion: false,
+		plural: true,
 		...config,
 	};
 

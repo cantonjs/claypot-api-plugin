@@ -5,6 +5,7 @@ import mapModules from './mapModules';
 import spec from '../spec';
 import { forEach } from 'lodash';
 import logger from './logger';
+import pluralize from 'pluralize';
 import { convertXKey, ensureSpec } from './convertXKey';
 
 export default function getRoutes(config = {}, claypotConfig) {
@@ -16,12 +17,15 @@ export default function getRoutes(config = {}, claypotConfig) {
 		const commons = {};
 
 		Object.keys(routeModule).forEach((key) => {
+			console.log('key', key);
+
 			const parsedKey = convertXKey(key);
 			if (parsedKey.startsWith('/')) {
 				paths.push(parsedKey);
 			}
 			else if (parsedKey.startsWith('x-')) {
-				commons[parsedKey] = routeModule[key];
+				let val = routeModule[key];
+				commons[parsedKey] = val;
 			}
 			else if (key === 'security') {
 				commons.security = routeModule[key];
