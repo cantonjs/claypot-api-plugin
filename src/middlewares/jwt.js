@@ -21,7 +21,13 @@ export default function jwtMiddleware(config) {
 			const { expiresIn } = options;
 			jwt.sign(data, config.secret, options, (err, accessToken) => {
 				if (err) { reject(err); }
-				else { resolve({ accessToken, expiresIn }); }
+				else {
+					resolve({
+						accessToken,
+						expiresIn,
+						expiresInMilliseconds: expiresIn * 1000,
+					});
+				}
 			});
 		});
 	};
