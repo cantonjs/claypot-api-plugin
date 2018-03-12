@@ -29,7 +29,6 @@
     "fs-extra": "^3.0.1",
     "glob": "^7.1.2",
     "jsonwebtoken": "^7.4.1",
-    "koa": "^2.2.0",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.1.1",
     "koa-static": "^3.0.0",
@@ -40,7 +39,7 @@
     "swagger-parser": "^3.4.1"
   },
   "peerDependencies": {
-    "claypot": "^0.0.0-beta.54"
+    "claypot": "^0.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -53,7 +52,7 @@
     "babel-preset-stage-0-without-async": "^1.0.0",
     "babel-register": "^6.11.6",
     "babel-register-cli": "^4.0.0",
-    "claypot": "^0.0.0-beta.54",
+    "claypot": "^0.1.1",
     "co-body": "^4.2.0",
     "cross-env": "^4.0.0",
     "eslint": "^4.18.2",
