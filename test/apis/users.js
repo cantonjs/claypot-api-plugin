@@ -1,13 +1,11 @@
-
 export default {
-	'x-model': 'Test',
 	'/': {
 		params: [
 			{
 				name: 'fork',
 				in: 'header',
 				'x-var': 'fork',
-			}
+			},
 		],
 		post: {
 			summary: 'Create a new user',
@@ -18,12 +16,12 @@ export default {
 					description: 'Pet object that needs to be added to the store',
 					required: true,
 					schema: '$User',
-				}
+				},
 			},
 			responses: {
 				'200': {
 					schema: '$User',
-				}
+				},
 			},
 			async controller() {
 				return { message: 'create user' };
@@ -51,8 +49,10 @@ export default {
 					},
 				},
 			},
+
 			// model: 'Test',
 			operator: 'hello',
+
 			// async controller() {
 			// 	// console.log('this.params', this.params);
 			// 	return {
@@ -76,5 +76,5 @@ export default {
 				return { ok: `deleted user ${this.params.id}` };
 			},
 		},
-	}
+	},
 };

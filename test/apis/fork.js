@@ -4,7 +4,7 @@ export default {
 	'x-model': 'Fork',
 	'/': {
 		get: {
-			'x-model': 'Test',
+			'x-model': 'User',
 			summary: 'Get users',
 			params: {
 				name: {
