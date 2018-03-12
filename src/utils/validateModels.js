@@ -1,22 +1,33 @@
-
-import { getModels } from 'claypot';
 import logger from './logger';
+import pluralize from 'pluralize';
 
-export default function validateModels(paths) {
-	const models = getModels();
+export default function validateModels(models, paths, config) {
 	Object.keys(paths).forEach((path) => {
 		const pathSchema = paths[path];
 		Object.keys(pathSchema).forEach((method) => {
 			const methodSchema = pathSchema[method];
-			if (!methodSchema) { return; }
+			if (!methodSchema) {
+				return;
+			}
 
 			const operatorName = methodSchema['x-operator'];
-			const modelName = methodSchema['x-model'];
+			let modelName = methodSchema['x-model'];
 
-			if (!operatorName || !modelName) { return; }
+			if (!operatorName || !modelName) {
+				return;
+			}
 
 			const methodName = method.toUpperCase();
-			const model = models[modelName];
+			let model = models[modelName];
+
+			if (modelName && !model && config.pluralize) {
+				const altModelName = pluralize.singular(modelName);
+				if (models[altModelName]) {
+					modelName = methodSchema['x-model'] = altModelName;
+					model = models[modelName];
+				}
+			}
+
 			if (modelName && !model) {
 				logger.error(
 					`Model "${modelName}" in "${methodName} ${path}" not found`,

@@ -1,5 +1,4 @@
-
-import Koa from 'koa';
+import { createApp } from 'claypot';
 import Router from 'koa-router';
 import createRouteMiddlwawres from './utils/createRouteMiddlwawres';
 import clay from './middlewares/clay';
@@ -12,18 +11,19 @@ export default function router(routes, config) {
 	routes.forEach(({ path, method, ctrls }) => {
 		const controllers = ctrls.map((ctrl) => async (ctx, next) => {
 			const result = await ctrl.call(ctx.clay, ctx, next);
-			if (result && !ctx.body) { ctx.body = result; }
+			if (result && !ctx.body) {
+				ctx.body = result;
+			}
 			return result;
 		});
 		const middlewares = createRouteMiddlwawres(method, path, controllers);
 		router[method](path, ...middlewares);
 	});
 
-	return new Koa()
+	return createApp()
 		.use(clay())
 		.use(error())
 		.use(body(config))
 		.use(jwt(config))
-		.use(router.middleware())
-	;
+		.use(router.middleware());
 }

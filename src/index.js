@@ -1,4 +1,3 @@
-
 import doc from './doc';
 import router from './router';
 import getConfig from './utils/getConfig';
@@ -13,12 +12,15 @@ export default class ApiClaypotPlugin {
 		this.claypotConfig = claypotConfig;
 	}
 
-	async initServer() {
+	async willStartServer(app) {
 		const { config, claypotConfig } = this;
+		const { models } = app;
 		await spec.init(config, claypotConfig);
 		this.routes = getRoutes(config, claypotConfig);
 		const deref = await spec.genDereferenceAsync();
-		if (!claypotConfig.production) { validateModels(deref.paths); }
+		if (!claypotConfig.production) {
+			validateModels(models, deref.paths, config);
+		}
 	}
 
 	middleware(app) {

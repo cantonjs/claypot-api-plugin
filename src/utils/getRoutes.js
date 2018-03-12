@@ -1,11 +1,9 @@
-
 import ensureAbsolutePath from './ensureAbsolutePath';
 import httpMethodsWhiteList from './httpMethodsWhiteList';
 import mapModules from './mapModules';
 import spec from '../spec';
 import { forEach } from 'lodash';
 import logger from './logger';
-import pluralize from 'pluralize';
 import { convertXKey, ensureSpec } from './convertXKey';
 
 export default function getRoutes(config = {}, claypotConfig) {
@@ -17,8 +15,6 @@ export default function getRoutes(config = {}, claypotConfig) {
 		const commons = {};
 
 		Object.keys(routeModule).forEach((key) => {
-			console.log('key', key);
-
 			const parsedKey = convertXKey(key);
 			if (parsedKey.startsWith('/')) {
 				paths.push(parsedKey);
@@ -66,10 +62,8 @@ export default function getRoutes(config = {}, claypotConfig) {
 	};
 
 	const controllers = mapModules(config.controllersPath, claypotConfig.root);
-	controllers
-		.forEach(({ name, module }) => {
-			addRoute(name, module);
-		})
-	;
+	controllers.forEach(({ name, module }) => {
+		addRoute(name, module);
+	});
 	return routes;
 }

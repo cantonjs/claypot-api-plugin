@@ -1,5 +1,4 @@
-
-import Koa from 'koa';
+import { createApp } from 'claypot';
 import koaStatic from 'koa-static';
 import { join } from 'path';
 import { readFile } from 'fs-extra';
@@ -8,13 +7,14 @@ import spec from './spec';
 
 let tpl;
 const readTemplateOnce = async () => {
-	if (tpl) { return tpl; }
+	if (tpl) {
+		return tpl;
+	}
 	return (tpl = readFile(join(__dirname, '..', 'template.html'), 'utf-8'));
 };
 
 export default function doc(config) {
-	const app = new Koa();
-	return app
+	return createApp()
 		.use(async (ctx, next) => {
 			if (ctx.request.path === '/') {
 				const compiled = template(await readTemplateOnce());
@@ -31,6 +31,5 @@ export default function doc(config) {
 				await next();
 			}
 		})
-		.use(koaStatic(join(__dirname, '..', 'assets')))
-	;
+		.use(koaStatic(join(__dirname, '..', 'assets')));
 }

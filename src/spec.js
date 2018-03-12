@@ -1,4 +1,3 @@
-
 import mapModules from './utils/mapModules';
 import ensureAbsolutePath from './utils/ensureAbsolutePath';
 import uniqLocations from './utils/uniqLocations';
@@ -11,14 +10,19 @@ import { readJson } from 'fs-extra';
 import { join } from 'path';
 import fetch from 'node-fetch';
 import {
-	NAME, PARAM_VAR, REQUIRED_SEC, MODEL, OPERATOR, COERCION,
+	NAME,
+	PARAM_VAR,
+	REQUIRED_SEC,
+	MODEL,
+	OPERATOR,
+	COERCION,
 } from './constants';
 
 const setRefs = function setRefs(spec) {
 	if (Array.isArray(spec)) {
 		spec = spec.map(setRefs);
 	}
-	else if (isObject(spec)) {
+	else if (spec && isObject(spec) && !(spec instanceof Date)) {
 		spec = Object.keys(spec).reduce((obj, key) => {
 			obj[key] = setRefs(spec[key]);
 			return obj;
@@ -27,7 +31,7 @@ const setRefs = function setRefs(spec) {
 	else if (isString(spec) && spec.startsWith('$')) {
 		const ref = spec.slice(1);
 		return {
-			'$ref': `#/definitions/${ref}`,
+			$ref: `#/definitions/${ref}`,
 		};
 	}
 
@@ -36,8 +40,12 @@ const setRefs = function setRefs(spec) {
 
 const ensureGet = (object = {}, key, Type = Object) => {
 	const val = object[key];
-	if (val) { return val; }
-	else { return (object[key] = new Type()); }
+	if (val) {
+		return val;
+	}
+	else {
+		return (object[key] = new Type());
+	}
 };
 
 class Spec {
@@ -75,7 +83,9 @@ class Spec {
 	}
 
 	async genDereferenceAsync() {
-		if (this._dereference) { return this._dereference; }
+		if (this._dereference) {
+			return this._dereference;
+		}
 		this._dereference = await new SwaggerParser().dereference(this.toJSON());
 		return this._dereference;
 	}
@@ -96,12 +106,22 @@ class Spec {
 		if (!Array.isArray(parameters) && isObject(parameters)) {
 			spec.parameters = Object.keys(parameters).map((name) => {
 				let parameter = parameters[name];
-				if (!parameter) { parameter = {}; }
-				if (isString(parameter)) { parameter = { in: parameter }; }
+				if (!parameter) {
+					parameter = {};
+				}
+				if (isString(parameter)) {
+					parameter = { in: parameter };
+				}
 				parameter[PARAM_VAR] = name;
-				if (!parameter.name) { parameter.name = name; }
-				if (!parameter.in) { parameter.in = 'body'; }
-				if (!parameter.type && !parameter.schema) { parameter.type = 'string'; }
+				if (!parameter.name) {
+					parameter.name = name;
+				}
+				if (!parameter.in) {
+					parameter.in = 'body';
+				}
+				if (!parameter.type && !parameter.schema) {
+					parameter.type = 'string';
+				}
 				return parameter;
 			});
 		}
@@ -151,7 +171,6 @@ class Spec {
 			};
 		}
 
-
 		// TODO: should only inject 401 when Security is required
 		if (!responses[401]) {
 			responses[401] = {
@@ -160,13 +179,14 @@ class Spec {
 			};
 		}
 
-
 		spec.responses = responses;
 		return spec;
 	}
 
 	ensureXNameField(pathSpec, name) {
-		if (!pathSpec[NAME]) { pathSpec[NAME] = capitalize(name); }
+		if (!pathSpec[NAME]) {
+			pathSpec[NAME] = capitalize(name);
+		}
 		return pathSpec[NAME];
 	}
 
@@ -267,22 +287,23 @@ class Spec {
 		const claypotConfig = this._claypotConfig;
 
 		const info = {
-			'version': '1.0.0',
-			'title': `${claypotConfig.name} API`,
+			version: '1.0.0',
+			title: `${claypotConfig.name} API`,
 			...config.info,
 		};
 
 		const spec = {
-			'swagger': '2.0',
+			swagger: '2.0',
 			info,
-			'basePath': ensureAbsolutePath(config.basePath),
-			'consumes': config.consumes,
-			'produces': config.produces,
-			'schemes': config.schemas ||
+			basePath: ensureAbsolutePath(config.basePath),
+			consumes: config.consumes,
+			produces: config.produces,
+			schemes:
+				config.schemas ||
 				['http', claypotConfig.ssl.enable && 'https'].filter(Boolean),
-			'paths': {},
-			'securityDefinitions': {},
-			'definitions': {},
+			paths: {},
+			securityDefinitions: {},
+			definitions: {},
 		};
 
 		if (config.defaultSecurity) {
@@ -298,7 +319,9 @@ class Spec {
 	}
 
 	getSecurityDefs() {
-		if (this._securityDefs) { return this._securityDefs; }
+		if (this._securityDefs) {
+			return this._securityDefs;
+		}
 
 		const { securities } = this._config;
 		forEach(securities, (name, key) => {
@@ -319,8 +342,8 @@ class Spec {
 		const requiredSecurity = pathDeref[REQUIRED_SEC] || [];
 		securities.forEach((security) => {
 			const { name, description } = security;
-			const hasExists = parameters.some((param) =>
-				param.name === name && param.in === security.in
+			const hasExists = parameters.some(
+				(param) => param.name === name && param.in === security.in,
 			);
 			if (!hasExists) {
 				parameters.push({
@@ -335,7 +358,9 @@ class Spec {
 	}
 
 	toJSON() {
-		if (this._json) { return this._json; }
+		if (this._json) {
+			return this._json;
+		}
 
 		const config = this._config;
 		const claypotConfig = this._claypotConfig;
