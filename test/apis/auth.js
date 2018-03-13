@@ -1,4 +1,3 @@
-
 export default {
 	'/login': {
 		post: {
@@ -17,16 +16,15 @@ export default {
 								type: 'string',
 								required: true,
 							},
-						}
-					}
-				}
+						},
+					},
+				},
 			},
 			async ctrl() {
 				const { params, sign } = this;
-				console.log('params', params);
 				const accessToken = await sign(params.body);
 				return accessToken;
-			}
-		}
-	}
+			},
+		},
+	},
 };
