@@ -3,7 +3,7 @@ import koaStatic from 'koa-static';
 import { join } from 'path';
 import { readFile } from 'fs-extra';
 import { template } from 'lodash';
-import spec from './spec';
+import spec from './swaggerSpec';
 
 let tpl;
 const readTemplateOnce = async () => {

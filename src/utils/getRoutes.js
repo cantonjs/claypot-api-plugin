@@ -1,7 +1,7 @@
 import ensureAbsolutePath from './ensureAbsolutePath';
 import httpMethodsWhiteList from './httpMethodsWhiteList';
 import mapModules from './mapModules';
-import spec from '../spec';
+import spec from '../swaggerSpec';
 import { forEach } from 'lodash';
 import logger from './logger';
 import { convertXKey, ensureSpec } from './convertXKey';
@@ -61,7 +61,7 @@ export default function getRoutes(config = {}, claypotConfig) {
 		});
 	};
 
-	const controllers = mapModules(config.controllersPath, claypotConfig.root);
+	const controllers = mapModules(config.controllersPath, claypotConfig.cwd);
 	controllers.forEach(({ name, module }) => {
 		addRoute(name, module);
 	});

@@ -366,7 +366,7 @@ class Spec {
 		const claypotConfig = this._claypotConfig;
 		let spec = this.getDefaultSpec();
 
-		const defs = mapModules(config.definitionsPath, claypotConfig.root);
+		const defs = mapModules(config.definitionsPath, claypotConfig.cwd);
 		const builtInDefs = mapModules('defs', __dirname);
 		builtInDefs.concat(defs).forEach(({ name, module }) => {
 			spec.definitions[name] = module;

@@ -1,11 +1,10 @@
-
 import parserMiddleware from '../middlewares/parser';
 import accessMiddleware from '../middlewares/access';
 import operation from '../middlewares/operation';
 import validationMiddleware from '../middlewares/validation';
 import paramsMiddleware from '../middlewares/params';
 import { PARAM_VAR, OPERATOR, MODEL } from '../constants';
-import spec from '../spec';
+import spec from '../swaggerSpec';
 import { differenceWith } from 'lodash';
 import logger from './logger';
 
@@ -39,7 +38,9 @@ export default function createRouteMiddlwawres(method, path, ctrls) {
 		parameters.forEach((parameter) => {
 			const { name, in: field } = parameter;
 			let key = parameter[PARAM_VAR];
-			if (!key && !keys.includes(name)) { key = name; }
+			if (!key && !keys.includes(name)) {
+				key = name;
+			}
 			params.push({ key, field, name });
 		});
 

@@ -1,6 +1,5 @@
-
 import jwt from 'jsonwebtoken';
-import spec from '../spec';
+import spec from '../swaggerSpec';
 import ms from 'ms';
 
 const defaultExpiresIn = ms('2h') / 1000;
@@ -20,7 +19,9 @@ export default function jwtMiddleware(config) {
 			};
 			const { expiresIn } = options;
 			jwt.sign(data, config.secret, options, (err, accessToken) => {
-				if (err) { reject(err); }
+				if (err) {
+					reject(err);
+				}
 				else {
 					resolve({
 						accessToken,
@@ -35,8 +36,12 @@ export default function jwtMiddleware(config) {
 	const verify = function verify(token) {
 		return new Promise((resolve, reject) => {
 			jwt.verify(token, config.secret, (err, decoded) => {
-				if (err) { reject(err); }
-				else { resolve(decoded); }
+				if (err) {
+					reject(err);
+				}
+				else {
+					resolve(decoded);
+				}
 			});
 		});
 	};
