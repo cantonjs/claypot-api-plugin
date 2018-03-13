@@ -1,7 +1,7 @@
 import logger from './logger';
 import pluralize from 'pluralize';
 
-export default function validateModels(models, paths, config) {
+export default function ensureModels(models, paths, config) {
 	Object.keys(paths).forEach((path) => {
 		const pathSchema = paths[path];
 		Object.keys(pathSchema).forEach((method) => {
