@@ -1,4 +1,3 @@
-
 import glob from 'glob';
 import { join, basename } from 'path';
 
