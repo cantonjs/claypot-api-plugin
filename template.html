@@ -82,6 +82,8 @@ window.onload = function() {
   const ui = SwaggerUIBundle({
     spec: API_SPEC,
     dom_id: '#swagger-ui',
+    deepLinking: true,
+    displayOperationId: true,
     presets: [
       SwaggerUIBundle.presets.apis,
       SwaggerUIStandalonePreset
@@ -91,9 +93,9 @@ window.onload = function() {
       HideTopbarPlugin
     ],
     layout: "StandaloneLayout"
-  })
+  });
 
-  window.ui = ui
+  window.ui = ui;
 }
 </script>
 </body>
