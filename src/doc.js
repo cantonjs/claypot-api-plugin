@@ -15,23 +15,29 @@ const readTemplateOnce = async () => {
 };
 
 export default function doc(config) {
-	return createApp()
-		.use(async (ctx, next) => {
-			try {
-				await next();
-			}
-			catch (err) {
-				if (err.status === 401) {
-					ctx.status = 401;
-					ctx.set('WWW-Authenticate', 'Basic');
-					ctx.throw(ctx.status);
+	const { docAuth } = config;
+	const app = createApp();
+	if (docAuth && docAuth.enable) {
+		const { name, pass } = docAuth;
+		app
+			.use(async (ctx, next) => {
+				try {
+					await next();
 				}
-				else {
-					throw err;
+				catch (err) {
+					if (err.status === 401) {
+						ctx.status = 401;
+						ctx.set('WWW-Authenticate', 'Basic');
+						ctx.throw(ctx.status);
+					}
+					else {
+						throw err;
+					}
 				}
-			}
-		})
-		.use(koaBasicAuth({ name: 'admin', pass: 'admin' }))
+			})
+			.use(koaBasicAuth({ name, pass }));
+	}
+	return app
 		.use(async (ctx, next) => {
 			if (ctx.request.path === '/') {
 				const compiled = template(await readTemplateOnce());
