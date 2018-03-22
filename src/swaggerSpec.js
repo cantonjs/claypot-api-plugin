@@ -161,6 +161,25 @@ class Spec {
 
 	ensureResponseField(spec) {
 		let { responses = {} } = spec;
+		const okResponse = responses[200] || {};
+		okResponse.description = okResponse.description || 'OK';
+		okResponse.headers = {
+			...okResponse.headers,
+			'X-RateLimit-Limit': {
+				schema: { type: 'integer' },
+				description: 'Request limit per hour',
+			},
+			'X-RateLimit-Remaining': {
+				schema: { type: 'integer' },
+				description: 'The number of requests left for the time window',
+			},
+			'X-RateLimit-Reset': {
+				schema: { type: 'string', format: 'date-time' },
+				description: 'The UTC date/time at which the current rate limit window',
+			},
+		};
+		responses[200] = okResponse;
+
 		const schema = {
 			$ref: '#/definitions/DefaultErrorResponse',
 		};
