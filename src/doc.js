@@ -1,5 +1,6 @@
 import { createApp } from 'claypot';
 import koaStatic from 'koa-static';
+import koaBasicAuth from 'koa-basic-auth';
 import { join } from 'path';
 import { readFile } from 'fs-extra';
 import { template } from 'lodash';
@@ -15,6 +16,22 @@ const readTemplateOnce = async () => {
 
 export default function doc(config) {
 	return createApp()
+		.use(async (ctx, next) => {
+			try {
+				await next();
+			}
+			catch (err) {
+				if (err.status === 401) {
+					ctx.status = 401;
+					ctx.set('WWW-Authenticate', 'Basic');
+					ctx.throw(ctx.status);
+				}
+				else {
+					throw err;
+				}
+			}
+		})
+		.use(koaBasicAuth({ name: 'admin', pass: 'admin' }))
 		.use(async (ctx, next) => {
 			if (ctx.request.path === '/') {
 				const compiled = template(await readTemplateOnce());
