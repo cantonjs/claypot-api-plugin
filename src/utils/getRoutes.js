@@ -61,7 +61,7 @@ export default function getRoutes(config = {}, claypotConfig) {
 		});
 	};
 
-	const controllers = mapModules(config.controllersPath, claypotConfig.cwd);
+	const controllers = mapModules(config.controllersPath, claypotConfig.baseDir);
 	controllers.forEach(({ name, module }) => {
 		addRoute(name, module);
 	});
