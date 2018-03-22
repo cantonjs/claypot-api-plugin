@@ -25,7 +25,7 @@
     "node": ">= 7.6.0"
   },
   "dependencies": {
-    "ajv": "^5.2.3",
+    "ajv": "^6.3.0",
     "fs-extra": "^3.0.1",
     "glob": "^7.1.2",
     "jsonwebtoken": "^7.4.1",
