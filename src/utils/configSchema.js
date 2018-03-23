@@ -105,5 +105,24 @@ export default {
 			type: 'boolean',
 			default: true,
 		},
+		ratelimit: {
+			type: 'object',
+			properties: {
+				db: {
+					type: 'string',
+				},
+				limit: {
+					type: 'number',
+				},
+				duration: {
+					type: 'string',
+					default: '1 hour',
+				},
+			},
+			dependencies: {
+				limit: ['db'],
+			},
+			default: {},
+		},
 	},
 };

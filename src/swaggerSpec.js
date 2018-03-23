@@ -16,6 +16,8 @@ import {
 	MODEL,
 	OPERATOR,
 	COERCION,
+	RATELIMIT,
+	RATELIMIT_DURATION,
 } from './constants';
 
 const setRefs = function setRefs(spec) {
@@ -160,24 +162,38 @@ class Spec {
 	}
 
 	ensureResponseField(spec) {
+		const ensureRateLimitHeaders = function ensureRateLimitHeaders(res) {
+			const duration = spec[RATELIMIT_DURATION] || 'hour';
+			const { headers } = res;
+			if (!headers['X-RateLimit-Limit']) {
+				headers['X-RateLimit-Limit'] = {
+					schema: { type: 'integer' },
+					description: `Requests limit (${spec[RATELIMIT]} per ${duration})`,
+				};
+			}
+			if (!headers['X-RateLimit-Remaining']) {
+				headers['X-RateLimit-Remaining'] = {
+					schema: { type: 'integer' },
+					description: 'The number of requests left for the time window',
+				};
+			}
+			if (!headers['X-RateLimit-Reset']) {
+				headers['X-RateLimit-Reset'] = {
+					schema: { type: 'string', format: 'date-time' },
+					description:
+						'The UTC date/time at which the current rate limit window',
+				};
+			}
+		};
+
 		let { responses = {} } = spec;
+
 		const okResponse = responses[200] || {};
 		okResponse.description = okResponse.description || 'OK';
-		okResponse.headers = {
-			...okResponse.headers,
-			'X-RateLimit-Limit': {
-				schema: { type: 'integer' },
-				description: 'Request limit per hour',
-			},
-			'X-RateLimit-Remaining': {
-				schema: { type: 'integer' },
-				description: 'The number of requests left for the time window',
-			},
-			'X-RateLimit-Reset': {
-				schema: { type: 'string', format: 'date-time' },
-				description: 'The UTC date/time at which the current rate limit window',
-			},
-		};
+		okResponse.headers = okResponse.headers || {};
+		if (spec[RATELIMIT] > 0) {
+			ensureRateLimitHeaders(okResponse);
+		}
 		responses[200] = okResponse;
 
 		const schema = {
@@ -218,6 +234,31 @@ class Spec {
 		}
 	}
 
+	ensureXRatelimitField(pathSpec) {
+		if (pathSpec.ratelimit !== undefined) {
+			if (pathSpec[RATELIMIT] === undefined) {
+				pathSpec[RATELIMIT] = pathSpec.ratelimit;
+			}
+			Reflect.deleteProperty(pathSpec, 'ratelimit');
+		}
+		if (pathSpec.ratelimitDuration !== undefined) {
+			if (pathSpec[RATELIMIT_DURATION] === undefined) {
+				pathSpec[RATELIMIT_DURATION] = pathSpec.ratelimitDuration;
+			}
+			Reflect.deleteProperty(pathSpec, 'ratelimitDuration');
+		}
+
+		const { ratelimit } = this._config;
+		if (ratelimit.db) {
+			if (ratelimit.limit && pathSpec[RATELIMIT] === undefined) {
+				pathSpec[RATELIMIT] = ratelimit.limit;
+			}
+			if (pathSpec[RATELIMIT] === undefined) {
+				pathSpec[RATELIMIT_DURATION] = ratelimit.duration;
+			}
+		}
+	}
+
 	ensureXModelField(pathSpec) {
 		if (!pathSpec[MODEL] && pathSpec[NAME]) {
 			pathSpec[MODEL] = pathSpec.model || pathSpec[NAME];
@@ -240,9 +281,10 @@ class Spec {
 		this.ensureParamsField(pathSpec);
 		this.uniqParams(pathSpec);
 		this.ensureSecurityField(pathSpec);
-		this.ensureResponseField(pathSpec);
 		this.ensureXModelField(pathSpec);
 		this.ensureXCoercionField(pathSpec);
+		this.ensureXRatelimitField(pathSpec);
+		this.ensureResponseField(pathSpec);
 		const spec = { tags: [xName], ...pathSpec };
 		return { spec, rootPath };
 	}
@@ -302,31 +344,38 @@ class Spec {
 	}
 
 	getDefaultSpec() {
-		const config = this._config;
+		const {
+			basePath,
+			apiInfo,
+			consumes,
+			produces,
+			schemas,
+			defaultSecurity,
+		} = this._config;
 		const claypotConfig = this._claypotConfig;
 
 		const info = {
 			version: '1.0.0',
 			title: `${claypotConfig.name} API`,
-			...config.info,
+			...apiInfo,
 		};
 
 		const spec = {
 			swagger: '2.0',
 			info,
-			basePath: ensureAbsolutePath(config.basePath),
-			consumes: config.consumes,
-			produces: config.produces,
+			basePath: ensureAbsolutePath(basePath),
+			consumes,
+			produces,
 			schemes:
-				config.schemas ||
+				schemas ||
 				['http', claypotConfig.ssl.enable && 'https'].filter(Boolean),
 			paths: {},
 			securityDefinitions: {},
 			definitions: {},
 		};
 
-		if (config.defaultSecurity) {
-			spec.security = config.defaultSecurity;
+		if (defaultSecurity) {
+			spec.security = defaultSecurity;
 			this.ensureSecurityField(spec);
 		}
 
