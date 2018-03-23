@@ -1,4 +1,5 @@
 export default {
+	ratelimit: 100,
 	'/login': {
 		post: {
 			summary: 'Login',

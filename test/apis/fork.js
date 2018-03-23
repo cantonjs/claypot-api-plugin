@@ -1,7 +1,7 @@
-
 export default {
 	'x-name': 'shit',
 	'x-model': 'Fork',
+	'x-ratelimit': -1,
 	'/': {
 		get: {
 			'x-model': 'User',
