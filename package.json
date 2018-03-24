@@ -6,7 +6,7 @@
   "files": [
     "LICENSE.md",
     "README.md",
-    "assets",
+    "static",
     "lib",
     "template.html"
   ],

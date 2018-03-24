@@ -54,5 +54,5 @@ export default function doc(config) {
 				await next();
 			}
 		})
-		.use(koaStatic(join(__dirname, '..', 'assets')));
+		.use(koaStatic(join(__dirname, '..', 'static')));
 }
