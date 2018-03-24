@@ -3,12 +3,13 @@ import accessMiddleware from '../middlewares/access';
 import operation from '../middlewares/operation';
 import validationMiddleware from '../middlewares/validation';
 import paramsMiddleware from '../middlewares/params';
-import { PARAM_VAR, OPERATOR, MODEL } from '../constants';
+import ratelimitMiddleware from '../middlewares/ratelimit';
+import { PARAM_VAR, OPERATOR, MODEL, RATELIMIT } from '../constants';
 import spec from '../swaggerSpec';
 import { differenceWith } from 'lodash';
 import logger from './logger';
 
-export default function createRouteMiddlwawres(method, path, ctrls) {
+export default function createRouteMiddlwawres(method, path, ctrls, config) {
 	const pathDeref = spec.getPath(path, method);
 	const middlewares = [
 		parserMiddleware(pathDeref),
@@ -45,6 +46,10 @@ export default function createRouteMiddlwawres(method, path, ctrls) {
 		});
 
 		middlewares.push(paramsMiddleware(params));
+	}
+
+	if (pathDeref[RATELIMIT] > 0) {
+		middlewares.push(ratelimitMiddleware(pathDeref, config));
 	}
 
 	const handlers = [...ctrls];

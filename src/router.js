@@ -16,7 +16,12 @@ export default function router(routes, config) {
 			}
 			return result;
 		});
-		const middlewares = createRouteMiddlwawres(method, path, controllers);
+		const middlewares = createRouteMiddlwawres(
+			method,
+			path,
+			controllers,
+			config,
+		);
 		router[method](path, ...middlewares);
 	});
 
