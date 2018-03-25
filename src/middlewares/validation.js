@@ -6,46 +6,38 @@ const omitParamSchemaKeys = ['required', 'name', 'in'];
 
 export default function validationMiddleware(pathDeref) {
 	const coerceTypes = pathDeref[COERCION];
-	const validate = function validate(ajv, schema, value) {
-		const isValid = ajv.validate(schema, value);
-		if (!isValid) {
-			const error = new Error(ajv.errorsText());
-			error.errors = ajv.errors;
-			throw error;
-		}
-	};
+
 	return async (ctx, next) => {
 		const { __params } = ctx.clay;
 		const ajv = new Ajv({ coerceTypes });
 
 		const paramsValue = {};
-		const paramsSchemaProperties = {};
-		const paramsSchemaRequired = [];
+		const properties = {};
+		const required = [];
 
-		forEach(__params, ({ value, spec }, key) => {
-			if (spec.in === 'body') {
-				if (isObject(spec.schema)) {
-					validate(ajv, spec.schema, value);
-				}
+		const validate = function validate(schema, value) {
+			const isValid = ajv.validate(schema, value);
+			if (!isValid) {
+				const error = new Error(ajv.errorsText());
+				error.errors = ajv.errors;
+				throw error;
 			}
-			else {
-				paramsValue[key] = value;
+		};
+
+		forEach(__params, ({ value, spec, name }) => {
+			if (spec.in !== 'body') {
+				paramsValue[name] = value;
 				if (spec.required) {
-					paramsSchemaRequired.push(key);
+					required.push(name);
 				}
-				paramsSchemaProperties[key] = omit(spec, omitParamSchemaKeys);
+				properties[name] = omit(spec, omitParamSchemaKeys);
+			}
+			else if (isObject(spec.schema)) {
+				validate(spec.schema, value);
 			}
 		});
 
-		validate(
-			ajv,
-			{
-				type: 'object',
-				properties: paramsSchemaProperties,
-				required: paramsSchemaRequired,
-			},
-			paramsValue,
-		);
+		validate({ type: 'object', properties, required }, paramsValue);
 
 		await next();
 	};
