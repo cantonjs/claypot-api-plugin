@@ -1,11 +1,11 @@
-# claypot-api-plugin
+# claypot-restful-plugin
 
-**THIS LIBRARY IS UNDER DEVELOPING, PLEASE DON'T USE IT IN PRODUCTION ENV**
+RESTful API plugin for [Claypot](https://github.com/cantonjs/claypot)
 
 ## Installing
 
-```bash
-$ yarn add claypot claypot-api-plugin
+```sh
+$ yarn add claypot claypot-restful-plugin
 ```
 
 **DOCUMENT IS COMING SOON**
