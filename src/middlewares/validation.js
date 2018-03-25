@@ -1,30 +1,51 @@
-
 import Ajv from 'ajv';
-import isEmptyValue from '../utils/isEmptyValue';
-import { isObject, forEach } from 'lodash';
+import { isObject, forEach, omit } from 'lodash';
+import { COERCION } from '../constants';
 
-export default function validationMiddleware() {
+const omitParamSchemaKeys = ['required', 'name', 'in'];
+
+export default function validationMiddleware(pathDeref) {
+	const coerceTypes = pathDeref[COERCION];
+	const validate = function validate(ajv, schema, value) {
+		const isValid = ajv.validate(schema, value);
+		if (!isValid) {
+			const error = new Error(ajv.errorsText());
+			error.errors = ajv.errors;
+			throw error;
+		}
+	};
 	return async (ctx, next) => {
-		const { __params, __coercion } = ctx.clay;
+		const { __params } = ctx.clay;
+		const ajv = new Ajv({ coerceTypes });
 
-		const ajv = new Ajv({
-			coerceTypes: __coercion,
-		});
+		const paramsValue = {};
+		const paramsSchemaProperties = {};
+		const paramsSchemaRequired = [];
 
-		forEach(__params, ({ value, spec }) => {
-			if (spec.required && isEmptyValue(value)) {
-				ctx.throw(405, `'${spec.name}' in ${spec.in} field is required.`);
-			}
-
-			if (spec.in === 'body' && isObject(spec.schema)) {
-				const isValid = ajv.validate(spec.schema, value);
-				if (!isValid) {
-					const error = new Error(ajv.errorsText());
-					error.errors = ajv.errors;
-					throw error;
+		forEach(__params, ({ value, spec }, key) => {
+			if (spec.in === 'body') {
+				if (isObject(spec.schema)) {
+					validate(ajv, spec.schema, value);
 				}
 			}
+			else {
+				paramsValue[key] = value;
+				if (spec.required) {
+					paramsSchemaRequired.push(key);
+				}
+				paramsSchemaProperties[key] = omit(spec, omitParamSchemaKeys);
+			}
 		});
+
+		validate(
+			ajv,
+			{
+				type: 'object',
+				properties: paramsSchemaProperties,
+				required: paramsSchemaRequired,
+			},
+			paramsValue,
+		);
 
 		await next();
 	};

@@ -11,19 +11,25 @@ export default {
 					in: 'query',
 					description: 'Get user by name',
 				},
-				tags: {
+
+				// tags: {
+				// 	in: 'query',
+				// 	type: 'array',
+				// 	description: 'List of tag names',
+				// 	collectionFormat: 'pipes',
+				// 	maxItems: 5,
+				// 	minItems: 2,
+				// 	items: {
+				// 		type: 'string',
+				// 		minLength: 2,
+				// 		maxItems: 5,
+				// 		minItems: 2,
+				// 	},
+				// },
+				page: {
 					in: 'query',
-					type: 'array',
-					description: 'List of tag names',
-					collectionFormat: 'pipes',
-					maxItems: 5,
-					minItems: 2,
-					items: {
-						type: 'string',
-						minLength: 2,
-						maxItems: 5,
-						minItems: 2,
-					},
+					type: 'number',
+					default: 1,
 				},
 			},
 			operator: 'hello',
