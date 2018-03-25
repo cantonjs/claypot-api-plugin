@@ -118,6 +118,10 @@ export default {
 					type: 'string',
 					default: '1 hour',
 				},
+				prefix: {
+					type: 'string',
+					default: 'ratelimit',
+				},
 			},
 			default: {},
 		},

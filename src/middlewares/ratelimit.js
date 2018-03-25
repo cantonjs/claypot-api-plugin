@@ -5,17 +5,18 @@ import { RATELIMIT, RATELIMIT_DURATION } from '../constants';
 
 export default function ratelimieMiddleware(pathDeref, config) {
 	const limit = pathDeref[RATELIMIT];
-	const cacheStore = config.store ? cacheStores[config.store] : cache;
+	const { store: storeKey, prefix, duration: defaultDuration } = config;
+	const cacheStore = storeKey ? cacheStores[storeKey] : cache;
 	if (cacheStore.store && cacheStore.store.name === 'memory') {
 		logger.warn(
 			'Detected that you are using memory to store ratelimit state, it is recommend to use `redis` instead.',
 		);
 	}
-	const duration = pathDeref[RATELIMIT_DURATION] || config.duration;
+	const duration = pathDeref[RATELIMIT_DURATION] || defaultDuration;
 	const ttl = ms(duration);
 	return async (ctx, next) => {
 		const { ip } = ctx;
-		const key = `ratelimit:${ip}`;
+		const key = `${prefix}:${ip}`;
 		const state = (await cacheStore.get(key)) || { start: Date.now() };
 		const { count: prevCount = 0, start } = state;
 		const count = 1 + prevCount;
