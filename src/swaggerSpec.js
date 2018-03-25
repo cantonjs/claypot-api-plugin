@@ -252,8 +252,8 @@ class Spec {
 		}
 
 		const { ratelimit } = this._config;
-		if (ratelimit.db) {
-			if (ratelimit.limit && pathSpec[RATELIMIT] === undefined) {
+		if (ratelimit.limit > 0) {
+			if (pathSpec[RATELIMIT] === undefined) {
 				pathSpec[RATELIMIT] = ratelimit.limit;
 			}
 			if (pathSpec[RATELIMIT] === undefined) {

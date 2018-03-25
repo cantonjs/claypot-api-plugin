@@ -1,20 +1,27 @@
-import { RATELIMIT, RATELIMIT_DURATION } from '../constants';
-import { cache } from 'claypot';
+import { cacheStores, cache } from 'claypot';
 import ms from 'ms';
+import logger from '../utils/logger';
+import { RATELIMIT, RATELIMIT_DURATION } from '../constants';
 
 export default function ratelimieMiddleware(pathDeref, config) {
 	const limit = pathDeref[RATELIMIT];
-	const duration = pathDeref[RATELIMIT_DURATION] || config.ratelimit.duration;
+	const cacheStore = config.store ? cacheStores[config.store] : cache;
+	if (cacheStore.store && cacheStore.store.name === 'memory') {
+		logger.warn(
+			'Detected that you are using memory to store ratelimit state, it is recommend to use `redis` instead.',
+		);
+	}
+	const duration = pathDeref[RATELIMIT_DURATION] || config.duration;
 	const ttl = ms(duration);
 	return async (ctx, next) => {
 		const { ip } = ctx;
 		const key = `ratelimit:${ip}`;
-		const state = (await cache.get(key)) || { start: Date.now() };
+		const state = (await cacheStore.get(key)) || { start: Date.now() };
 		const { count: prevCount = 0, start } = state;
 		const count = 1 + prevCount;
 		const ttlOption = prevCount ? { ttl } : {};
 		Object.assign(state, { count });
-		await cache.set(key, state, ttlOption);
+		await cacheStore.set(key, state, ttlOption);
 		const remaining = limit - count;
 		const resetDate = new Date(start + ttl).toISOString();
 		if (remaining < 0) {

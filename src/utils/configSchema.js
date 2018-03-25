@@ -108,7 +108,7 @@ export default {
 		ratelimit: {
 			type: 'object',
 			properties: {
-				db: {
+				store: {
 					type: 'string',
 				},
 				limit: {

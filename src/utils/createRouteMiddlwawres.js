@@ -49,7 +49,7 @@ export default function createRouteMiddlwawres(method, path, ctrls, config) {
 	}
 
 	if (pathDeref[RATELIMIT] > 0) {
-		middlewares.push(ratelimitMiddleware(pathDeref, config));
+		middlewares.push(ratelimitMiddleware(pathDeref, config.ratelimit));
 	}
 
 	const handlers = [...ctrls];
