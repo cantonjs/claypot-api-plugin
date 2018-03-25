@@ -4204,15 +4204,6 @@ koa-mount@^3.0.0:
     debug "^2.6.1"
     koa-compose "^3.2.1"
 
-koa-ratelimit@^4.0.0:
-  version "4.0.0"
-  resolved "http://registry.npm.taobao.org/koa-ratelimit/download/koa-ratelimit-4.0.0.tgz#c126e6f6ae38aaa2fa12c62f4af7759157592f3c"
-  dependencies:
-    debug "^2.2.0"
-    ms "^0.7.1"
-    ratelimiter "^3.0.2"
-    thenify "^3.2.0"
-
 koa-router@^7.1.1:
   version "7.1.1"
   resolved "http://registry.npm.taobao.org/koa-router/download/koa-router-7.1.1.tgz#38cce6b1381fada18cfa47a3b3323e995ca231cf"
@@ -4713,10 +4704,6 @@ ms@0.7.2:
 ms@2.0.0, ms@^2.0.0:
   version "2.0.0"
   resolved "http://registry.npm.taobao.org/ms/download/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
-
-ms@^0.7.1:
-  version "0.7.3"
-  resolved "http://registry.npm.taobao.org/ms/download/ms-0.7.3.tgz#708155a5e44e33f5fd0fc53e81d0d40a91be1fff"
 
 mute-stream@0.0.6:
   version "0.0.6"
@@ -5558,10 +5545,6 @@ randomatic@^1.1.3:
   dependencies:
     is-number "^2.0.2"
     kind-of "^3.0.2"
-
-ratelimiter@^3.0.2:
-  version "3.0.3"
-  resolved "http://registry.npm.taobao.org/ratelimiter/download/ratelimiter-3.0.3.tgz#6dbca58b05422f2a08e224d4ba3a0cfb86c30966"
 
 raw-body@2:
   version "2.3.2"
@@ -6699,12 +6682,6 @@ thenify-all@^1.0.0:
 "thenify@>= 3.1.0 < 4":
   version "3.2.1"
   resolved "http://registry.npm.taobao.org/thenify/download/thenify-3.2.1.tgz#251fd1c80aff6e5cf57cb179ab1fcb724269bd11"
-  dependencies:
-    any-promise "^1.0.0"
-
-thenify@^3.2.0:
-  version "3.3.0"
-  resolved "http://registry.npm.taobao.org/thenify/download/thenify-3.3.0.tgz#e69e38a1babe969b0108207978b9f62b88604839"
   dependencies:
     any-promise "^1.0.0"
 
