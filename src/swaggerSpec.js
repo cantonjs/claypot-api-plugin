@@ -19,6 +19,7 @@ import {
 	COERCION,
 	RATELIMIT,
 	RATELIMIT_DURATION,
+	RATELIMIT_SCOPE,
 } from './constants';
 
 const setRefs = function setRefs(spec) {
@@ -252,12 +253,18 @@ class Spec {
 		}
 
 		const { ratelimit } = this._config;
+		if (pathSpec[RATELIMIT] > 0 && !pathSpec[RATELIMIT_SCOPE]) {
+			pathSpec[RATELIMIT_SCOPE] = pathSpec[NAME];
+		}
 		if (ratelimit.limit > 0) {
 			if (pathSpec[RATELIMIT] === undefined) {
 				pathSpec[RATELIMIT] = ratelimit.limit;
 			}
 			if (pathSpec[RATELIMIT] === undefined) {
 				pathSpec[RATELIMIT_DURATION] = ratelimit.duration;
+			}
+			if (pathSpec[RATELIMIT_SCOPE] === undefined) {
+				pathSpec[RATELIMIT_SCOPE] = ratelimit.scope;
 			}
 		}
 	}

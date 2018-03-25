@@ -122,6 +122,10 @@ export default {
 					type: 'string',
 					default: 'ratelimit',
 				},
+				scope: {
+					type: 'string',
+					default: 'global',
+				},
 			},
 			default: {},
 		},

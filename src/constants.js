@@ -6,3 +6,4 @@ export const OPERATOR = 'x-operator';
 export const COERCION = 'x-coercion';
 export const RATELIMIT = 'x-ratelimit';
 export const RATELIMIT_DURATION = 'x-ratelimit-duration';
+export const RATELIMIT_SCOPE = 'x-ratelimit-scope';

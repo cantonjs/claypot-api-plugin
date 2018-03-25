@@ -1,7 +1,7 @@
 import { cacheStores, cache } from 'claypot';
 import ms from 'ms';
 import logger from '../utils/logger';
-import { RATELIMIT, RATELIMIT_DURATION } from '../constants';
+import { RATELIMIT, RATELIMIT_DURATION, RATELIMIT_SCOPE } from '../constants';
 
 const warnMemoryCache = function warnMemoryCache(cache) {
 	if (!warnMemoryCache.warned && cache.store && cache.store.name === 'memory') {
@@ -13,15 +13,16 @@ const warnMemoryCache = function warnMemoryCache(cache) {
 };
 
 export default function ratelimieMiddleware(pathDeref, config) {
-	const limit = pathDeref[RATELIMIT];
 	const { store: storeKey, prefix, duration: defaultDuration } = config;
+	const limit = pathDeref[RATELIMIT];
+	const scope = pathDeref[RATELIMIT_SCOPE];
 	const cacheStore = storeKey ? cacheStores[storeKey] : cache;
 	warnMemoryCache(cacheStore);
 	const duration = pathDeref[RATELIMIT_DURATION] || defaultDuration;
 	const ttl = ms(duration);
 	return async (ctx, next) => {
 		const { ip } = ctx;
-		const key = `${prefix}:${ip}`;
+		const key = `${prefix}:${scope}:${ip}`;
 		const state = (await cacheStore.get(key)) || { start: Date.now() };
 		const { count: prevCount = 0, start } = state;
 		const count = 1 + prevCount;
