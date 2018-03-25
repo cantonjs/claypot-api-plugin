@@ -3,15 +3,20 @@ import ms from 'ms';
 import logger from '../utils/logger';
 import { RATELIMIT, RATELIMIT_DURATION } from '../constants';
 
+const warnMemoryCache = function warnMemoryCache(cache) {
+	if (!warnMemoryCache.warned && cache.store && cache.store.name === 'memory') {
+		warnMemoryCache.warned = true;
+		logger.warn(
+			'It is recommend to use `redis` cache store instead of `memory` in `ratelimit.store` config.',
+		);
+	}
+};
+
 export default function ratelimieMiddleware(pathDeref, config) {
 	const limit = pathDeref[RATELIMIT];
 	const { store: storeKey, prefix, duration: defaultDuration } = config;
 	const cacheStore = storeKey ? cacheStores[storeKey] : cache;
-	if (cacheStore.store && cacheStore.store.name === 'memory') {
-		logger.warn(
-			'Detected that you are using memory to store ratelimit state, it is recommend to use `redis` instead.',
-		);
-	}
+	warnMemoryCache(cacheStore);
 	const duration = pathDeref[RATELIMIT_DURATION] || defaultDuration;
 	const ttl = ms(duration);
 	return async (ctx, next) => {
