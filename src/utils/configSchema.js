@@ -119,9 +119,6 @@ export default {
 					default: '1 hour',
 				},
 			},
-			dependencies: {
-				limit: ['db'],
-			},
 			default: {},
 		},
 	},
