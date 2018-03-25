@@ -9,6 +9,7 @@ import SwaggerParser from 'swagger-parser';
 import { readJson } from 'fs-extra';
 import { join } from 'path';
 import fetch from 'node-fetch';
+import ms from 'ms';
 import {
 	NAME,
 	PARAM_VAR,
@@ -162,13 +163,15 @@ class Spec {
 	}
 
 	ensureResponseField(spec) {
+		const duration =
+			spec[RATELIMIT_DURATION] || this._config.ratelimit.duration;
 		const ensureRateLimitHeaders = function ensureRateLimitHeaders(res) {
-			const duration = spec[RATELIMIT_DURATION] || 'hour';
+			const per = ms(ms(duration), { long: true }).replace(/^1 /, '');
 			const { headers } = res;
 			if (!headers['X-RateLimit-Limit']) {
 				headers['X-RateLimit-Limit'] = {
 					schema: { type: 'integer' },
-					description: `Requests limit (${spec[RATELIMIT]} per ${duration})`,
+					description: `Requests limit (${spec[RATELIMIT]} per ${per})`,
 				};
 			}
 			if (!headers['X-RateLimit-Remaining']) {
