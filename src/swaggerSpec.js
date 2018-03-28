@@ -205,7 +205,7 @@ class Spec {
 		};
 		if (!responses[400]) {
 			responses[400] = {
-				description: 'Payload Error',
+				description: 'Bad Request',
 				schema,
 			};
 		}
@@ -213,7 +213,7 @@ class Spec {
 		// TODO: should only inject 401 when Security is required
 		if (!responses[401]) {
 			responses[401] = {
-				description: 'Access Denied',
+				description: 'Unauthorized',
 				schema,
 			};
 		}
