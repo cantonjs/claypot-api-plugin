@@ -34,10 +34,13 @@ export default function validationMiddleware(pathDeref) {
 			}
 			else if (isObject(spec.schema)) {
 				validate(spec.schema, value);
+				paramsValue.body = value;
 			}
 		});
 
 		validate({ type: 'object', properties, required }, paramsValue);
+
+		forEach(paramsValue, (value, name) => (__params[name].value = value));
 
 		await next();
 	};
