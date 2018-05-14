@@ -39,11 +39,8 @@ export default {
 					type: 'array',
 					description: 'List of tag names',
 					collectionFormat: 'pipes',
-					maxItems: 5,
-					minItems: 2,
 					items: {
 						type: 'string',
-						minLength: 2,
 						maxItems: 5,
 						minItems: 2,
 					},

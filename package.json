@@ -3,7 +3,13 @@
 	"description": "Claypot RESTful plugin",
 	"version": "0.0.0-15",
 	"main": "lib/index",
-	"files": ["LICENSE.md", "README.md", "static", "lib", "template.html"],
+	"files": [
+		"LICENSE.md",
+		"README.md",
+		"static",
+		"lib",
+		"template.html"
+	],
 	"scripts": {
 		"start": "claypot start",
 		"test": "cross-env CLAYPOT_DEV=true jest",
@@ -63,7 +69,12 @@
 		"rimraf": "^2.5.4"
 	},
 	"jest": {
-		"collectCoverageFrom": ["src/**/*.js"],
-		"modulePathIgnorePatterns": ["node_modules", "lib"]
+		"collectCoverageFrom": [
+			"src/**/*.js"
+		],
+		"modulePathIgnorePatterns": [
+			"node_modules",
+			"lib"
+		]
 	}
 }
