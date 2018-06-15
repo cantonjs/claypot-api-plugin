@@ -7,7 +7,7 @@ const warnMemoryCache = function warnMemoryCache(cache) {
 	if (!warnMemoryCache.warned && cache.store && cache.store.name === 'memory') {
 		warnMemoryCache.warned = true;
 		logger.warn(
-			'It is recommend to use `redis` cache store instead of `memory` in `ratelimit.store` config.',
+			'It is recommended to use `redis` cache store instead of `memory` in `ratelimit.store` config.',
 		);
 	}
 };
