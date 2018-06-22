@@ -359,7 +359,7 @@ class Spec {
 			apiInfo,
 			consumes,
 			produces,
-			schemas,
+			schemes,
 			defaultSecurity,
 		} = this._config;
 		const claypotConfig = this._claypotConfig;
@@ -377,7 +377,7 @@ class Spec {
 			consumes,
 			produces,
 			schemes:
-				schemas ||
+				schemes ||
 				['http', claypotConfig.ssl.enable && 'https'].filter(Boolean),
 			paths: {},
 			securityDefinitions: {},
