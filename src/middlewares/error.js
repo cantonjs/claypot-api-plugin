@@ -1,4 +1,3 @@
-
 import { isDev } from 'claypot';
 import logger from '../utils/logger';
 
@@ -11,12 +10,12 @@ export default function error() {
 		catch (err) {
 			Object.assign(err, { url: originalUrl, method });
 			logger.error(err);
-			ctx.status = err.status || 400;
-			ctx.body = {
-				code: err.code || 1,
-				message: err.message,
-			};
-			if (isDev) { ctx.body.stack = err.stack; }
+			const { code = 1, message, status = 400 } = err;
+			ctx.status = status;
+			const body = { code, message };
+			if (err.reason) body.reason = err.reason;
+			if (isDev) body.stack = err.stack;
+			ctx.body = body;
 		}
 	};
 }
