@@ -6,19 +6,16 @@ import paramsMiddleware from '../middlewares/params';
 import ratelimitMiddleware from '../middlewares/ratelimit';
 import { PARAM_VAR, OPERATOR, MODEL, RATELIMIT } from '../constants';
 import spec from '../swaggerSpec';
-import { differenceWith } from 'lodash';
 import logger from './logger';
 
 export default function createRouteMiddlwawres(method, path, ctrls, config) {
 	const pathDeref = spec.getPath(path, method);
+	const debugMessage = `"${method.toUpperCase()} ${path}"`;
 
 	const middlewares = [
-		parserMiddleware(pathDeref),
+		parserMiddleware(pathDeref, debugMessage),
 		validationMiddleware(pathDeref),
 	];
-
-	// FIXME: remove
-	const paramToIgnores = [];
 
 	const securityNames = spec.getSecurityNames(pathDeref.security);
 
@@ -29,18 +26,13 @@ export default function createRouteMiddlwawres(method, path, ctrls, config) {
 			securityName: name,
 		}));
 		spec.addSecurityParameters(pathDeref, securities);
-		middlewares.push(accessMiddleware(securities, paramToIgnores));
+		middlewares.push(accessMiddleware(securities));
 	}
 
 	if (pathDeref.parameters) {
 		const params = [];
 		const keys = [];
-		const parameters = differenceWith(
-			pathDeref.parameters,
-			paramToIgnores,
-			(a, b) => a.in === b.in && a.name === b.name,
-		);
-		parameters.forEach((parameter) => {
+		pathDeref.parameters.forEach((parameter) => {
 			const { name, in: field } = parameter;
 			let key = parameter[PARAM_VAR];
 			if (!key && !keys.includes(name)) {

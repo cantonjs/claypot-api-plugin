@@ -1,11 +1,11 @@
-import getParamValue from '../utils/getParamValue';
+import createParamGetter from '../utils/createParamGetter';
 import formatCollection from '../utils/formatCollection';
 import { PARAM_VAR } from '../constants';
 
-export default function parserMiddleware(pathDeref) {
+export default function parserMiddleware(pathDeref, debugMessage) {
 	return async (ctx, next) => {
-		const getValue = getParamValue(ctx);
 		const { parameters = [] } = pathDeref;
+		const getValue = createParamGetter(ctx, debugMessage);
 		const params = {};
 
 		for (const spec of parameters) {
