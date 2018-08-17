@@ -15,10 +15,16 @@ export default function accessMiddleware(securities) {
 					// delete secerity param
 					delete ctx.clay.__params[param.name];
 
-					const token = param.value;
-					return token && ctx.clay.verify(token);
+					const accessToken = param.value;
+					if (param.spec.required && !accessToken) ctx.throw(401);
+					return accessToken;
 				})
-				.filter(Boolean);
+				.filter(Boolean)
+				.map(async (accessToken) =>
+					ctx.clay.verify(accessToken).catch((err) => {
+						ctx.throw(401, undefined, { reason: err.message });
+					}),
+				);
 
 			const decodes = await Promise.all(verifies);
 
