@@ -42,22 +42,17 @@ describe('security', () => {
 		});
 	});
 
-	test.only('required security', async () => {
-		jest.setTimeout(10000);
+	test('required security', async () => {
 		const secret = 'test';
 		const { urlRoot } = await startServer({
 			secret,
 			securities: {
-				'foo': 'X-ACCESS-TOKEN',
-				'bar': 'X-ACCESS-TOKEN-BAR',
+				foo: 'foo',
+				bar: 'bar',
 			},
 			defaultSecurity: [],
 		});
-		const assessToken = await sign({ security: 'foo' }, secret);
-		const req = fetch(`${urlRoot}/api/security/required`, {
-			// headers: { 'X-ACCESS-TOKEN': assessToken },
-		});
-		await expect(req).rejects.toThrow();
+		const res = await fetch(`${urlRoot}/api/security/required`);
+		expect(res.status).toBe(401);
 	});
-
 });

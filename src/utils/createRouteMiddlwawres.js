@@ -11,13 +11,17 @@ import logger from './logger';
 
 export default function createRouteMiddlwawres(method, path, ctrls, config) {
 	const pathDeref = spec.getPath(path, method);
+
 	const middlewares = [
 		parserMiddleware(pathDeref),
 		validationMiddleware(pathDeref),
 	];
+
+	// FIXME: remove
 	const paramToIgnores = [];
 
 	const securityNames = spec.getSecurityNames(pathDeref.security);
+
 	if (securityNames.length) {
 		const securityDefs = spec.getSecurityDefs();
 		const securities = securityNames.map((name) => ({

@@ -12,6 +12,7 @@ export async function startServer(pluginConfig, claypotConfig) {
 		cwd: resolve('test'),
 		execCommand: 'babel-register',
 		production: false,
+		logLevel: 'FATAL',
 		plugins: [
 			{
 				module: '../src',

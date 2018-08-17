@@ -134,7 +134,7 @@ class Spec {
 	}
 
 	ensureSecurityField(spec) {
-		const convertRequiredSecurity = (sec) => {
+		const ensureRequiredSecurity = (sec) => {
 			const name = Object.keys(sec)[0];
 			if (name && name.charAt(0) === '*') {
 				const requiredSecurity = ensureGet(spec, REQUIRED_SEC, Array);
@@ -147,11 +147,9 @@ class Spec {
 
 		if (spec && Array.isArray(spec.security)) {
 			const { security } = spec;
-			security.forEach((sec, index) => {
-				if (isString(sec)) {
-					security[index] = { [sec]: [] };
-				}
-				security[index] = convertRequiredSecurity(security[index]);
+			spec.security = security.map((sec) => {
+				if (isString(sec)) sec = { [sec]: [] };
+				return ensureRequiredSecurity(sec);
 			});
 		}
 		return spec;
@@ -342,7 +340,7 @@ class Spec {
 			const { security } = pathDeref;
 			if (security && security.length && !pathDeref[requiredSec]) {
 				const rSec = rootPathDeref[requiredSec] || rootDeref[requiredSec];
-				pathDeref[requiredSec] = rSec;
+				if (rSec) pathDeref[requiredSec] = rSec;
 			}
 
 			return pathDeref;

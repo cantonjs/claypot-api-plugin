@@ -1,7 +1,7 @@
 export default {
 	'/required': {
 		get: {
-			security: ['*bar'],
+			security: ['*foo'],
 			async ctrl(ctx) {
 				const { states } = ctx.clay;
 				const securityKeys = Object.keys(states);
@@ -11,7 +11,7 @@ export default {
 	},
 	'/': {
 		get: {
-			security: ['bar'],
+			security: ['foo', 'bar'],
 			async ctrl(ctx) {
 				const { states } = ctx.clay;
 				const securityKeys = Object.keys(states);
