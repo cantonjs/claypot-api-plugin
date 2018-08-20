@@ -1,4 +1,3 @@
-
 export default function clayMiddleware() {
 	return async (ctx, next) => {
 		const clay = {
