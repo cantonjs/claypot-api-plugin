@@ -1,5 +1,5 @@
 export default class User {
-	hello(params) {
+	hello() {
 		return { ok: true };
 	}
 }
