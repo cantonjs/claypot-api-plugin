@@ -1,4 +1,3 @@
-
 const formatMap = {
 	csv: ',',
 	ssv: ' ',
@@ -6,7 +5,8 @@ const formatMap = {
 	pipes: '|',
 };
 
-export default function formatCollection(collection = '', format = 'csv') {
-	if (!formatMap.hasOwnProperty(format)) { format = 'csv'; }
-	return (collection + '').split(formatMap[format]);
+export default function formatCollection(collection, format = 'csv') {
+	if (!collection) return [];
+	if (!formatMap.hasOwnProperty(format)) format = 'csv';
+	return collection.toString().split(formatMap[format]);
 }
