@@ -9,7 +9,7 @@ export default function validationMiddleware(pathDeref) {
 
 	return async (ctx, next) => {
 		const { __params } = ctx.clay;
-		const ajv = new Ajv({ coerceTypes });
+		const ajv = new Ajv({ coerceTypes, useDefaults: true });
 
 		const paramsValue = {};
 		const properties = {};
