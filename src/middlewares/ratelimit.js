@@ -14,28 +14,40 @@ const warnMemoryCache = function warnMemoryCache(cache) {
 
 export default function ratelimieMiddleware(pathDeref, config) {
 	const { store: storeKey, prefix, duration: defaultDuration } = config;
-	const limit = pathDeref[RATELIMIT];
+	const limit = +pathDeref[RATELIMIT];
 	const scope = pathDeref[RATELIMIT_SCOPE];
 	const cacheStore = storeKey ? cacheStores[storeKey] : cache;
 	warnMemoryCache(cacheStore);
 	const duration = pathDeref[RATELIMIT_DURATION] || defaultDuration;
-	const ttl = ms(duration);
+	const durationMs = ms(duration);
 	return async (ctx, next) => {
 		const { ip } = ctx;
 		const key = `${prefix}:${scope}:${ip}`;
-		const state = (await cacheStore.get(key)) || { start: Date.now() };
-		const { count: prevCount = 0, start } = state;
+
+		let state = await cacheStore.get(key);
+
+		if (state && state.reset && state.reset < new Date().toISOString()) {
+			state = null;
+		}
+
+		if (!state) {
+			state = { reset: new Date(Date.now() + durationMs).toISOString() };
+		}
+
+		logger.debug(`ratelimit: scope="${scope}" ip="${ip}"`);
+
+		const { reset } = state;
+		const prevCount = +state.count || 0;
 		const count = 1 + prevCount;
-		const ttlOption = prevCount ? { ttl } : {};
 		Object.assign(state, { count });
-		await cacheStore.set(key, state, ttlOption);
+		const ttl = new Date(reset).getTime() - Date.now();
+		await cacheStore.set(key, state, { ttl });
 		const remaining = limit - count;
-		const resetDate = new Date(start + ttl).toISOString();
 		if (remaining < 0) {
-			const retry = ms(ttl + start - Date.now(), { long: true });
+			const retry = ms(ttl, { long: true });
 			ctx.throw(429, `Rate limit exceeded, retry in ${retry}.`);
 		}
-		ctx.set('X-RateLimit-Reset', resetDate);
+		ctx.set('X-RateLimit-Reset', reset);
 		ctx.set('X-RateLimit-Limit', limit);
 		ctx.set('X-RateLimit-Remaining', remaining);
 		await next();
