@@ -15,6 +15,7 @@ export default class ApiClaypotPlugin {
 	async willStartServer(app) {
 		const { config, claypotConfig } = this;
 		const { models } = app;
+		app.proxy = true;
 		await spec.init(config, claypotConfig);
 		this.routes = getRoutes(config, claypotConfig);
 		const deref = await spec.genDereferenceAsync();
