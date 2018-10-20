@@ -1284,13 +1284,9 @@ bytes@2.4.0:
   version "2.4.0"
   resolved "http://registry.npm.taobao.org/bytes/download/bytes-2.4.0.tgz#7d97196f9d5baf7f6935e25985549edd2a6c2339"
 
-bytes@3.0.0:
+bytes@3.0.0, bytes@^3.0.0:
   version "3.0.0"
   resolved "http://registry.npm.taobao.org/bytes/download/bytes-3.0.0.tgz#d32815404d689699f85a4ea4fa8755dd13a96048"
-
-bytes@^2.3.0:
-  version "2.5.0"
-  resolved "http://registry.npm.taobao.org/bytes/download/bytes-2.5.0.tgz#4c9423ea2d252c270c41b2bdefeff9bb6b62c06a"
 
 cache-base@^1.0.1:
   version "1.0.1"
@@ -1484,9 +1480,9 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-claypot@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/claypot/-/claypot-0.1.1.tgz#6715ed70b3383d2d5268ae0288f11929f1cc3049"
+claypot@^0.2.1:
+  version "0.2.1"
+  resolved "http://registry.npm.taobao.org/claypot/download/claypot-0.2.1.tgz#669ed7f0b97295a0076f0cb0760f981ac0c09292"
   dependencies:
     cache-manager "^2.4.0"
     chalk "^2.1.0"
@@ -1496,13 +1492,14 @@ claypot@^0.1.1:
     http-proxy "^1.12.0"
     import-file "^1.2.4"
     koa "^2.2.0"
-    koa-compress "^2.0.0"
+    koa-compress "^3.0.0"
     koa-connect-history-api-fallback "^0.3.1"
     koa-error "^3.0.0"
     koa-etag "^2.0.0"
     koa-favicon "^2.0.0"
     koa-helmet "^3.1.0"
     koa-mount "^3.0.0"
+    koa-send "^5.0.0"
     koa-static "^4.0.1"
     koa-weixin-jssdk "^2.0.0"
     lodash "^4.17.2"
@@ -1864,12 +1861,6 @@ debug@2, debug@^2.1.2, debug@^2.3.3, debug@^2.6.1, debug@^2.6.3, debug@^2.6.9:
   dependencies:
     ms "2.0.0"
 
-debug@^2.6.0:
-  version "2.6.3"
-  resolved "http://registry.npm.taobao.org/debug/download/debug-2.6.3.tgz#0f7eb8c30965ec08c72accfa0130c8b79984141d"
-  dependencies:
-    ms "0.7.2"
-
 debug@^2.6.8:
   version "2.6.8"
   resolved "http://registry.npm.taobao.org/debug/download/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
@@ -1976,7 +1967,7 @@ depd@1.1.1:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/depd/download/depd-1.1.1.tgz#5783b4e1c459f06fa5ca27f991f3d06e7a310359"
 
-depd@^1.1.0, depd@~1.1.1:
+depd@^1.1.0, depd@~1.1.1, depd@~1.1.2:
   version "1.1.2"
   resolved "http://registry.npm.taobao.org/depd/download/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
 
@@ -3252,13 +3243,23 @@ http-errors@1.6.2, http-errors@^1.2.8, http-errors@^1.6.1, http-errors@~1.6.1, h
     setprototypeof "1.0.3"
     statuses ">= 1.3.1 < 2"
 
-http-errors@^1.3.1, http-errors@~1.5.0:
+http-errors@^1.3.1:
   version "1.5.1"
   resolved "http://registry.npm.taobao.org/http-errors/download/http-errors-1.5.1.tgz#788c0d2c1de2c81b9e6e8c01843b6b97eb920750"
   dependencies:
     inherits "2.0.3"
     setprototypeof "1.0.2"
     statuses ">= 1.3.1 < 2"
+
+http-errors@^1.6.3:
+  version "1.7.1"
+  resolved "http://registry.npm.taobao.org/http-errors/download/http-errors-1.7.1.tgz#6a4ffe5d35188e1c39f872534690585852e1f027"
+  dependencies:
+    depd "~1.1.2"
+    inherits "2.0.3"
+    setprototypeof "1.1.0"
+    statuses ">= 1.5.0 < 2"
+    toidentifier "1.0.0"
 
 http-proxy-agent@1:
   version "1.0.0"
@@ -4398,11 +4399,11 @@ koa-compose@^4.0.0:
   version "4.0.0"
   resolved "http://registry.npm.taobao.org/koa-compose/download/koa-compose-4.0.0.tgz#2800a513d9c361ef0d63852b038e4f6f2d5a773c"
 
-koa-compress@^2.0.0:
-  version "2.0.0"
-  resolved "http://registry.npm.taobao.org/koa-compress/download/koa-compress-2.0.0.tgz#7b7eb2921b847746b5e122ba9f5cd8a671e8ea3a"
+koa-compress@^3.0.0:
+  version "3.0.0"
+  resolved "http://registry.npm.taobao.org/koa-compress/download/koa-compress-3.0.0.tgz#3194059c215cbc24e59bbc84c2c7453a4c88564f"
   dependencies:
-    bytes "^2.3.0"
+    bytes "^3.0.0"
     compressible "^2.0.0"
     koa-is-json "^1.0.0"
     statuses "^1.0.0"
@@ -4467,16 +4468,7 @@ koa-router@^7.1.1:
     methods "^1.0.1"
     path-to-regexp "^1.1.1"
 
-koa-send@^3.2.0:
-  version "3.3.0"
-  resolved "http://registry.npm.taobao.org/koa-send/download/koa-send-3.3.0.tgz#5a4ae245564680c6ecf6079e9275fa5173a861dc"
-  dependencies:
-    co "^4.6.0"
-    debug "^2.6.0"
-    mz "^2.3.1"
-    resolve-path "^1.3.1"
-
-koa-send@^4.1.0:
+koa-send@^4.1.0, koa-send@^4.1.3:
   version "4.1.3"
   resolved "http://registry.npm.taobao.org/koa-send/download/koa-send-4.1.3.tgz#0822207bbf5253a414c8f1765ebc29fa41353cb6"
   dependencies:
@@ -4485,12 +4477,21 @@ koa-send@^4.1.0:
     mz "^2.6.0"
     resolve-path "^1.4.0"
 
-koa-static@^3.0.0:
-  version "3.0.0"
-  resolved "http://registry.npm.taobao.org/koa-static/download/koa-static-3.0.0.tgz#40442233d2c0b35c225e450199c10bf8a539e416"
+koa-send@^5.0.0:
+  version "5.0.0"
+  resolved "http://registry.npm.taobao.org/koa-send/download/koa-send-5.0.0.tgz#5e8441e07ef55737734d7ced25b842e50646e7eb"
   dependencies:
-    debug "*"
-    koa-send "^3.2.0"
+    debug "^3.1.0"
+    http-errors "^1.6.3"
+    mz "^2.7.0"
+    resolve-path "^1.4.0"
+
+koa-static@^4.0.0:
+  version "4.0.3"
+  resolved "http://registry.npm.taobao.org/koa-static/download/koa-static-4.0.3.tgz#5f93ad00fb1905db9ce46667c0e8bb7d22abfcd8"
+  dependencies:
+    debug "^3.1.0"
+    koa-send "^4.1.3"
 
 koa-static@^4.0.1:
   version "4.0.2"
@@ -5011,17 +5012,9 @@ mute-stream@0.0.7:
   version "0.0.7"
   resolved "http://registry.npm.taobao.org/mute-stream/download/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
 
-mz@^2.0.0, mz@^2.1.0, mz@^2.6.0:
+mz@^2.0.0, mz@^2.1.0, mz@^2.6.0, mz@^2.7.0:
   version "2.7.0"
   resolved "http://registry.npm.taobao.org/mz/download/mz-2.7.0.tgz#95008057a56cafadc2bc63dde7f9ff6955948e32"
-  dependencies:
-    any-promise "^1.0.0"
-    object-assign "^4.0.1"
-    thenify-all "^1.0.0"
-
-mz@^2.3.1:
-  version "2.6.0"
-  resolved "http://registry.npm.taobao.org/mz/download/mz-2.6.0.tgz#c8b8521d958df0a4f2768025db69c719ee4ef1ce"
   dependencies:
     any-promise "^1.0.0"
     object-assign "^4.0.1"
@@ -6332,13 +6325,6 @@ resolve-from@^3.0.0:
   version "3.0.0"
   resolved "http://registry.npm.taobao.org/resolve-from/download/resolve-from-3.0.0.tgz#b22c7af7d9d6881bc8b6e653335eebcb0a188748"
 
-resolve-path@^1.3.1:
-  version "1.3.3"
-  resolved "http://registry.npm.taobao.org/resolve-path/download/resolve-path-1.3.3.tgz#4d83aba6468c2b8e632a575e3f52b0fa0dbe1a5c"
-  dependencies:
-    http-errors "~1.5.0"
-    path-is-absolute "1.0.1"
-
 resolve-path@^1.4.0:
   version "1.4.0"
   resolved "http://registry.npm.taobao.org/resolve-path/download/resolve-path-1.4.0.tgz#c4bda9f5efb2fce65247873ab36bb4d834fe16f7"
@@ -6547,6 +6533,10 @@ setprototypeof@1.0.2:
 setprototypeof@1.0.3:
   version "1.0.3"
   resolved "http://registry.npm.taobao.org/setprototypeof/download/setprototypeof-1.0.3.tgz#66567e37043eeb4f04d91bd658c0cbefb55b8e04"
+
+setprototypeof@1.1.0:
+  version "1.1.0"
+  resolved "http://registry.npm.taobao.org/setprototypeof/download/setprototypeof-1.1.0.tgz#d0bd85536887b6fe7c0d818cb962d9d91c54e656"
 
 shallow-copy@0.0.1:
   version "0.0.1"
@@ -6804,6 +6794,10 @@ static-extend@^0.1.1:
 "statuses@>= 1.3.1 < 2":
   version "1.3.1"
   resolved "http://registry.npm.taobao.org/statuses/download/statuses-1.3.1.tgz#faf51b9eb74aaef3b3acf4ad5f61abf24cb7b93e"
+
+"statuses@>= 1.5.0 < 2":
+  version "1.5.0"
+  resolved "http://registry.npm.taobao.org/statuses/download/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
 
 statuses@^1.0.0, statuses@^1.2.0:
   version "1.4.0"
@@ -7180,6 +7174,10 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     extend-shallow "^3.0.2"
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
+
+toidentifier@1.0.0:
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/toidentifier/download/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
 
 topo@1.x.x:
   version "1.1.0"
