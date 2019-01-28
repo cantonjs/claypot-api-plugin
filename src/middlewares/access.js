@@ -1,7 +1,7 @@
 import uniqLocations from '../utils/uniqLocations';
 import { find } from 'lodash';
 
-export default function accessMiddleware(securities) {
+export default function accessMiddleware(securities, required = []) {
 	return async (ctx, next) => {
 		if (securities.length) {
 			const verifies = uniqLocations(securities)
@@ -27,6 +27,13 @@ export default function accessMiddleware(securities) {
 				);
 
 			const decodes = await Promise.all(verifies);
+			const isAllRequired = required.every((req) =>
+				decodes.find(({ security }) => security === req),
+			);
+
+			if (!isAllRequired) {
+				return ctx.throw(403);
+			}
 
 			ctx.clay.states = decodes.reduce((states, { security, ...data }) => {
 				states[security] = data;

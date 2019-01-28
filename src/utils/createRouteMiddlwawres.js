@@ -4,9 +4,15 @@ import operation from '../middlewares/operation';
 import validationMiddleware from '../middlewares/validation';
 import paramsMiddleware from '../middlewares/params';
 import ratelimitMiddleware from '../middlewares/ratelimit';
-import { PARAM_VAR, OPERATOR, MODEL, RATELIMIT } from '../constants';
 import spec from '../swaggerSpec';
 import logger from './logger';
+import {
+	PARAM_VAR,
+	OPERATOR,
+	MODEL,
+	RATELIMIT,
+	REQUIRED_SEC,
+} from '../constants';
 
 export default function createRouteMiddlwawres(method, path, ctrls, config) {
 	const pathDeref = spec.getPath(path, method);
@@ -21,12 +27,13 @@ export default function createRouteMiddlwawres(method, path, ctrls, config) {
 
 	if (securityNames.length) {
 		const securityDefs = spec.getSecurityDefs();
+		const required = pathDeref[REQUIRED_SEC];
 		const securities = securityNames.map((name) => ({
 			...securityDefs[name],
 			securityName: name,
 		}));
 		spec.addSecurityParameters(pathDeref, securities);
-		middlewares.push(accessMiddleware(securities));
+		middlewares.push(accessMiddleware(securities, required));
 	}
 
 	if (pathDeref.parameters) {

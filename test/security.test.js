@@ -55,4 +55,21 @@ describe('security', () => {
 		const res = await fetch(`${urlRoot}/api/security/required`);
 		expect(res.status).toBe(401);
 	});
+
+	test('required security permission', async () => {
+		const secret = 'test';
+		const { urlRoot } = await startServer({
+			secret,
+			securities: {
+				foo: 'X-ACCESS-TOKEN',
+				bar: 'X-ACCESS-TOKEN',
+			},
+			defaultSecurity: [],
+		});
+		const assessToken = await sign({ security: 'bar' }, secret);
+		const res = await fetch(`${urlRoot}/api/security/required`, {
+			headers: { 'X-ACCESS-TOKEN': assessToken },
+		});
+		expect(res.status).toBe(403);
+	});
 });
