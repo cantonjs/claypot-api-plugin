@@ -33,7 +33,7 @@ export default function createRouteMiddlwawres(method, path, ctrls, config) {
 			securityName: name,
 		}));
 		spec.addSecurityParameters(pathDeref, securities);
-		middlewares.push(accessMiddleware(securities, required));
+		middlewares.push(accessMiddleware(securities, required, securityDefs));
 	}
 
 	if (pathDeref.parameters) {

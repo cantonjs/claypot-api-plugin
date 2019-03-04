@@ -72,4 +72,21 @@ describe('security', () => {
 		});
 		expect(res.status).toBe(403);
 	});
+
+	test('required multi', async () => {
+		const secret = 'test';
+		const { urlRoot } = await startServer({
+			secret,
+			securities: {
+				foo: 'X-ACCESS-TOKEN',
+				bar: 'X-ACCESS-TOKEN',
+			},
+			defaultSecurity: [],
+		});
+		const assessToken = await sign({ security: 'bar' }, secret);
+		const res = await fetch(`${urlRoot}/api/security/requiredmulti`, {
+			headers: { 'X-ACCESS-TOKEN': assessToken },
+		});
+		expect(res.status).toBe(200);
+	});
 });
