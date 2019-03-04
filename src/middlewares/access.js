@@ -20,7 +20,7 @@ export default function accessMiddleware(
 				securitiesSet.add(security);
 			}
 			else {
-				requiredMap.set(key, new Set());
+				requiredMap.set(key, new Set([security]));
 			}
 		}
 	}
