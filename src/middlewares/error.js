@@ -10,7 +10,9 @@ export default function error() {
 		catch (err) {
 			Object.assign(err, { url: originalUrl, method });
 			const { stack } = err;
-			Reflect.deleteProperty(err, 'stack');
+			if (typeof err === 'object') {
+				Reflect.deleteProperty(err, 'stack');
+			}
 			logger.error(err);
 			const { code = 1, message, status = 400 } = err;
 			ctx.status = status;
